@@ -32,6 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Compare.cpp" />
+		<Unit filename="Compare.hpp" />
 		<Unit filename="EntryNotFoundException.cpp" />
 		<Unit filename="EntryNotFoundException.hpp" />
 		<Unit filename="Ini.cpp" />

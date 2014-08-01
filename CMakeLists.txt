@@ -6,6 +6,7 @@ project(compare-ini)
 # add_definitions(-DDEF_NAME_HERE)
 
 set(compare_ini_sources
+    Compare.cpp
     EntryNotFoundException.cpp
     Ini.cpp
     IniSection.cpp

@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include "Ini.hpp"
+#include "Compare.hpp"
 
 //return codes
 const int rcInvalidParameter = 1;
@@ -47,19 +48,25 @@ void showGPLNotice()
 
 void showHelp()
 {
-  std::cout << "compare-ini\n"
+  std::cout << "compare-ini /path/to/first.ini /path/to/second.ini\n"
             << "\n"
             << "options:\n"
-            << "  --help           - displays this help message and quits\n"
-            << "  -?               - same as --help\n"
-            << "  --version        - displays the version of the programme and quits\n"
-            << "\n"
-            << "NOTE: This programme is still under development and far from complete.\n";
+            << "  --help    | -?   - displays this help message and quits\n"
+            << "  --version | -v   - displays the version of the programme and quits\n"
+            << "  --license | -l   - show license information.\n";
 }
 
 void showVersion()
 {
-  std::cout << "compare-ini, version 0.01, 2014-07-31\n";
+  std::cout << "compare-ini, version 0.02, 2014-08-01\n";
+}
+
+std::string pad(const std::string& str, const std::string::size_type len)
+{
+  const std::string::size_type sl = str.size();
+  if (len>sl)
+    return str + std::string(len-sl, ' ');
+  return str;
 }
 
 int main(int argc, char **argv)
@@ -85,6 +92,11 @@ int main(int argc, char **argv)
         else if ((param=="--version") or (param=="-v"))
         {
           showVersion();
+          return 0;
+        }
+        else if ((param=="--licence") or (param=="--license") or (param=="-l"))
+        {
+          showGPLNotice();
           return 0;
         }
         else if (first.empty())
@@ -118,8 +130,6 @@ int main(int argc, char **argv)
     return rcInvalidParameter;
   }
 
-  showGPLNotice();
-
   //read first ini
   Ini ini_first;
   unsigned int lc = 0;
@@ -142,12 +152,50 @@ int main(int argc, char **argv)
     return rcFileError;
   }
 
+  bool needCompare = false;
+
   if (ini_first.hasSameContent(ini_second))
     std::cout << "Both .ini files have the same content.\n";
   else if (ini_first.hasSameSectionNames(ini_second))
+  {
     std::cout << "Both .ini files have the same section names.\n";
+    needCompare = true;
+  }
   else
+  {
     std::cout << "Both .ini files seem to be rather different.\n";
+    needCompare = true;
+  }
+
+  if (needCompare)
+  {
+    std::vector<std::string> out_left;
+    std::vector<std::string> out_right;
+    compare(ini_first, ini_second, out_left, out_right);
+    out_left.insert(out_left.begin(), first);
+    out_right.insert(out_right.begin(), second);
+
+    std::string::size_type maxLeftLength = 0;
+    std::vector<std::string>::const_iterator cLeftIter = out_left.begin();
+    while (cLeftIter!=out_left.end())
+    {
+      const std::string::size_type l = cLeftIter->size();
+      if (l > maxLeftLength)
+        maxLeftLength = l;
+      ++cLeftIter;
+    } //while
+
+    //output
+    std::cout << std::endl;
+    cLeftIter = out_left.begin();
+    std::vector<std::string>::const_iterator cRightIter = out_right.begin();
+    while (cLeftIter != out_left.end())
+    {
+      std::cout << pad(*cLeftIter, maxLeftLength) << " | " << *cRightIter << std::endl;
+      ++cLeftIter;
+      ++cRightIter;
+    }//while
+  } //if comparison needed
 
   return 0;
 }
