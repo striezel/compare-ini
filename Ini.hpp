@@ -65,8 +65,26 @@ class Ini
      */
     std::vector<std::string> getSectionNames() const;
 
+
+    /** \brief returns the character that starts line comments
+     *
+     * \return current comment character
+     */
     char getCommentCharacter() const;
-    void setCommentCharacter(const char cc);
+
+
+    /** \brief sets the comment character, i.e. the char that starts line comments
+     *
+     * \param cc the new comment character
+     * \return Returns true, if the new comment character was set.
+     *         Returns false otherwise.
+     * \remarks Only printable, non-space characters are allowed as comment
+     *          character. If you try to set a control character or a whitespace
+     *          character or an opening square bracket as comment character,
+     *          the function will NOT change the current comment character and
+     *          return false to indicate that the value has not been changed.
+     */
+    bool setCommentCharacter(const char cc);
 
 
     /** \brief removes all sections from the ini

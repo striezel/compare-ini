@@ -22,6 +22,7 @@
 #include "EntryNotFoundException.hpp"
 #include <fstream>
 #include <cstring>
+#include <cctype>
 #include "StringFunctions.hpp"
 
 Ini::Ini()
@@ -67,10 +68,14 @@ char Ini::getCommentCharacter() const
   return m_CommentChar;
 }
 
-void Ini::setCommentCharacter(const char cc)
+bool Ini::setCommentCharacter(const char cc)
 {
-  if (cc!='[')
+  if (cc!='[' && std::isgraph(cc))
+  {
     m_CommentChar = cc;
+    return true;
+  }
+  return false;
 }
 
 void Ini::clear()

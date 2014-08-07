@@ -48,17 +48,19 @@ void showGPLNotice()
 
 void showHelp()
 {
-  std::cout << "compare-ini /path/to/first.ini /path/to/second.ini\n"
+  std::cout << "compare-ini [options] /path/to/first.ini /path/to/second.ini\n"
             << "\n"
             << "options:\n"
             << "  --help    | -?   - displays this help message and quits\n"
             << "  --version | -v   - displays the version of the programme and quits\n"
-            << "  --license | -l   - show license information.\n";
+            << "  --license | -l   - show license information.\n"
+            << "  --comment C      - set comment character to C\n"
+            << "  -c C | -cC       - short forms of --comment C\n";
 }
 
 void showVersion()
 {
-  std::cout << "compare-ini, version 0.02, 2014-08-01\n";
+  std::cout << "compare-ini, version 0.03, 2014-08-08\n";
 }
 
 std::string pad(const std::string& str, const std::string::size_type len)
@@ -73,6 +75,7 @@ int main(int argc, char **argv)
 {
   std::string first = "";
   std::string second = "";
+  char commentCharacter = '\0';
 
   if (argc>1 and argv!=NULL)
   {
@@ -94,10 +97,49 @@ int main(int argc, char **argv)
           showVersion();
           return 0;
         }
+        //show license
         else if ((param=="--licence") or (param=="--license") or (param=="-l"))
         {
           showGPLNotice();
           return 0;
+        }
+        //set comment character
+        else if ((param=="--comment") or (param=="-c"))
+        {
+          if (commentCharacter!='\0')
+          {
+            std::cout << "Comment character was already set to '" << commentCharacter << "'.\n";
+            return rcInvalidParameter;
+          }
+          //enough arguments left?
+          if ((i+1 < argc) and (argv[i+1]!=NULL))
+          {
+            const std::string cc = std::string(argv[i+1]);
+            if (cc.size()!=1)
+            {
+              std::cout << "Error: comment character parameter must be exactly one character!\n";
+              return rcInvalidParameter;
+            }
+            commentCharacter = cc[0];
+            //skip next parameter, because it's already used as comment character
+            ++i;
+          }
+          else
+          {
+            std::cout << "Error: You have to specify a comment character after \""
+                      << param<<"\".\n";
+            return rcInvalidParameter;
+          }
+        }
+        //shorter way to set comment character
+        else if ((param.size()==3) and (param.find("-c") == 0))
+        {
+          if (commentCharacter!='\0')
+          {
+            std::cout << "Comment character was already set to '" << commentCharacter << "'.\n";
+            return rcInvalidParameter;
+          }
+          commentCharacter = param[2];
         }
         else if (first.empty())
         {
@@ -130,8 +172,20 @@ int main(int argc, char **argv)
     return rcInvalidParameter;
   }
 
+  //check comment character
+  if (commentCharacter=='\0')
+  {
+    //was not set, set it to default
+    commentCharacter = ';';
+  }
+
   //read first ini
   Ini ini_first;
+  if (!ini_first.setCommentCharacter(commentCharacter))
+  {
+    std::cout << "Error: invalid comment character specified!\n";
+    return rcInvalidParameter;
+  }
   unsigned int lc = 0;
   std::string error_msg = "";
   bool success = ini_first.read(first, lc, error_msg);
@@ -143,6 +197,11 @@ int main(int argc, char **argv)
 
   //read second ini
   Ini ini_second;
+  if (!ini_second.setCommentCharacter(commentCharacter))
+  {
+    std::cout << "Error: invalid comment character specified!\n";
+    return rcInvalidParameter;
+  }
   lc = 0;
   error_msg = "";
   success = ini_second.read(second, lc, error_msg);
@@ -152,22 +211,9 @@ int main(int argc, char **argv)
     return rcFileError;
   }
 
-  bool needCompare = false;
-
   if (ini_first.hasSameContent(ini_second))
     std::cout << "Both .ini files have the same content.\n";
   else if (ini_first.hasSameSectionNames(ini_second))
-  {
-    std::cout << "Both .ini files have the same section names.\n";
-    needCompare = true;
-  }
-  else
-  {
-    std::cout << "Both .ini files seem to be rather different.\n";
-    needCompare = true;
-  }
-
-  if (needCompare)
   {
     std::vector<std::string> out_left;
     std::vector<std::string> out_right;
@@ -195,7 +241,7 @@ int main(int argc, char **argv)
       ++cLeftIter;
       ++cRightIter;
     }//while
-  } //if comparison needed
+  } //if different / comparison needed
 
   return 0;
 }
