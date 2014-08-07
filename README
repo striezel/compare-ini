@@ -1,4 +1,4 @@
-compare-ini, version 0.02
+compare-ini, version 0.03
 =========================
 
   compare-ini is a program that can compare contents of ini files side by side.
@@ -19,8 +19,18 @@ What kind of ini files can compare-ini compare?
     with same name but different values within one section. If there are, the
     later key is assumed to replace the value of the previous one.
 
-  * Comment lines start with ";" in the first column of the line. The contents
-    of comment lines are ignored during comparison.
+  * By default, comment lines start with ";" in the first column of the line.
+    The contents of comment lines are ignored during comparison.
+    However, you can change that character via the --comment command line
+    option to another merry, printable, non-whitespace character.
+
+  * There is no single line that contains both data and a comment. That is,
+    in lines like
+
+      key = value ; comment here
+
+    the programme will consider the value to be "value ; comment here" and
+    NOT just "value".
 
   * The order of sections and values within the sections is of no importance
     to the program. That means that the following two files would be
