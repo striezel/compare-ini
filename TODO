@@ -12,5 +12,3 @@ Possible future improvements:
     key = value ; comment here
 
   and leave the comment part out of the value
-
-* allow comment characters on a per-file basis
