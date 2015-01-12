@@ -6,12 +6,26 @@ compiler:
 branches:
   only:
     - master
+    - coverity_scan
 before_install:
   - cat /etc/issue.net
 script:
-  - mkdir ./Build
-  - cd ./Build
-  - cmake ../
-  - make
+  - echo "coverity stuff should be done by now."
 notifications:
   email: false
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "PAwKZBVCfxLHfCvlfn+JpA35XfcZfHllCEEQgC09SNC8GWl7lG6fcpHFL6DXoZ2+2n4DgOWm+PJnUnreQjVbQsR8QwTlQDyTzNdMlUVK40Ap134zdbi6EqPdETrXSNyug9crzjEXKLxpKut+pT3l6q38H+ts6+STVgTONqvcajM="
+
+addons:
+  coverity_scan:
+    project:
+      name: "Thoronador/compare-ini"
+      description: "compare-ini - Build submitted via Travis CI"
+    notification_email: thoronador@users.sourceforge.net
+    build_command_prepend: "cmake ./"
+    build_command:   "make"
+    branch_pattern: coverity_scan
