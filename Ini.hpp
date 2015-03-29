@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef INI_HPP_INCLUDED
-#define INI_HPP_INCLUDED
+#ifndef INI_HPP
+#define INI_HPP
 
 #include <string>
 #include <map>
@@ -121,4 +121,4 @@ class Ini
     char m_CommentChar;
 }; //class
 
-#endif // INI_HPP_INCLUDED
+#endif // INI_HPP

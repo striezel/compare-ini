@@ -18,11 +18,11 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef COMPARE_HPP_INCLUDED
-#define COMPARE_HPP_INCLUDED
+#ifndef COMPARE_HPP
+#define COMPARE_HPP
 
 #include "Ini.hpp"
 
 void compare(const Ini& left, const Ini& right, std::vector<std::string>& out_left, std::vector<std::string>& out_right);
 
-#endif // COMPARE_HPP_INCLUDED
+#endif // COMPARE_HPP

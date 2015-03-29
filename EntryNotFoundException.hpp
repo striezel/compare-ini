@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef ENTRYNOTFOUNDEXCEPTION_HPP_INCLUDED
-#define ENTRYNOTFOUNDEXCEPTION_HPP_INCLUDED
+#ifndef ENTRYNOTFOUNDEXCEPTION_HPP
+#define ENTRYNOTFOUNDEXCEPTION_HPP
 
 #include <exception>
 #include <string>
@@ -43,4 +43,4 @@ class EntryNotFoundException : public std::exception
     std::string m_Explain;
 }; //class
 
-#endif // ENTRYNOTFOUNDEXCEPTION_HPP_INCLUDED
+#endif // ENTRYNOTFOUNDEXCEPTION_HPP

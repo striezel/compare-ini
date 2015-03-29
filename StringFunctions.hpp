@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef UTILITYFUNCTIONS_H
-#define UTILITYFUNCTIONS_H
+#ifndef STRINGFUNCTIONS_HPP
+#define STRINGFUNCTIONS_HPP
 
 #include <string>
 
@@ -39,4 +39,4 @@ void trim(std::string& str1);
 */
 bool removeEnclosingBrackets(std::string& expr);
 
-#endif // UTILITYFUNCTIONS_H
+#endif // STRINGFUNCTIONS_HPP

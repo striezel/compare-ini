@@ -18,8 +18,8 @@
  -------------------------------------------------------------------------------
 */
 
-#ifndef INISECTION_HPP_INCLUDED
-#define INISECTION_HPP_INCLUDED
+#ifndef INISECTION_HPP
+#define INISECTION_HPP
 
 #include <string>
 #include <map>
@@ -88,4 +88,4 @@ class IniSection
     std::map<std::string, std::string> m_Values;
 }; //class
 
-#endif // INISECTION_HPP_INCLUDED
+#endif // INISECTION_HPP
