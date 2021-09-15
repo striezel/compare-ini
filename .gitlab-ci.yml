@@ -1,0 +1,25 @@
+image: debian:11-slim
+
+# Build with GCC / G++.
+build_gcc:
+  stage: build
+  before_script:
+    - apt-get update && apt-get -y install cmake g++ pkg-config
+    - export CC=gcc && export CXX=g++
+  script:
+    - mkdir ./build
+    - cd ./build
+    - cmake ../
+    - make -j4
+
+# Build with Clang / Clang++.
+build_clang:
+  stage: build
+  before_script:
+    - apt-get update && apt-get -y install clang cmake pkg-config
+    - export CC=clang && export CXX=clang++
+  script:
+    - mkdir ./build
+    - cd ./build
+    - cmake ../
+    - make -j4
