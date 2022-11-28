@@ -65,6 +65,9 @@ machine. Just use:
 
 ... and CMake should take care of all the details.
 
+For information how to build the program on Windows, see the
+[MSYS2 build instructions](./documentation/msys2-build.md).
+
 ## Licensing
 
 compare-ini is distributed under the the GNU General Public License,
