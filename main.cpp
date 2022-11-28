@@ -66,7 +66,7 @@ void showHelp()
 
 void showVersion()
 {
-  std::cout << "compare-ini, version 0.04, 2014-08-09\n";
+  std::cout << "compare-ini, version 0.5.0, 2022-11-28\n";
 }
 
 std::string pad(const std::string& str, const std::string::size_type len)

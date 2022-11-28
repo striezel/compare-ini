@@ -2,7 +2,7 @@
 
 _(Note: Smaller fixes or improvements may be omitted.)_
 
-## Version 0.?? (2022-11-??)
+## Version 0.5.0 (2022-11-28)
 
 The minimum required CMake version for compiling the project is raised from 2.8
 to 3.8.

@@ -1,4 +1,4 @@
-# compare-ini, version 0.03
+# compare-ini
 
 compare-ini is a program that can compare contents of ini files side by side.
 
