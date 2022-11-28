@@ -1,22 +1,22 @@
 # compare-ini, version 0.03
 
 compare-ini is a program that can compare contents of ini files side by side.
-It's command line only, so no "nice" GUI but just text output.
 
+It's command line only, so no "nice" GUI but just text output.
 
 ## What kind of ini files can compare-ini compare?
 
 The program makes a few assumptions about the ini files:
 
-* Sections are marked by square brackets (i.e. [Section]).
-* Keys and values are delimited by equality sign (=).
+* Sections are marked by square brackets (i.e. `[Section]`).
+* Keys and values are delimited by equality sign (`=`).
 * Keys and values are case-sensitive.
 * Keys names within a section are unique, so there should not be two keys
   with same name but different values within one section. If there are, the
   later key is assumed to replace the value of the previous one.
 * By default, comment lines start with ";" in the first column of the line.
   The contents of comment lines are ignored during comparison.
-  However, you can change that character via the --comment command line
+  However, you can change that character via the `--comment` command line
   option to another merry, printable, non-whitespace character.
 * There is no single line that contains both data and a comment. That is,
   in lines like
@@ -53,7 +53,7 @@ files you want to compare. An example would be:
 
     ./compare-ini /path/to/foo.ini bar.ini
 
-This would compare the files /path/to/foo.ini and bar.ini with each other.
+This would compare the files `/path/to/foo.ini` and `bar.ini` with each other.
 
 ## Building the program from source
 
