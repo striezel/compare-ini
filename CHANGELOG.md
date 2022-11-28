@@ -7,6 +7,10 @@ _(Note: Smaller fixes or improvements may be omitted.)_
 The minimum required CMake version for compiling the project is raised from 2.8
 to 3.8.
 
+The C++ standard used during compilation has been raised from de-facto still
+using C++98 or whatever the compiler uses as default standard to C++17.
+Recent compilers should support that by now.
+
 ## Version 0.04 (2014-08-09)
 
 Allow to set comment character on a per-file basis, i. e. both files can have
