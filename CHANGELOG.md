@@ -1,0 +1,27 @@
+# Version history of compare-ini
+
+_(Note: Smaller fixes or improvements may be omitted.)_
+
+## Version 0.?? (2022-11-??)
+
+The minimum required CMake version for compiling the project is raised from 2.8
+to 3.8.
+
+## Version 0.04 (2014-08-09)
+
+Allow to set comment character on a per-file basis, i. e. both files can have
+different comment characters from now on.
+
+## Version 0.03 (2014-08-08)
+
+The comment character for the .ini files can now be changed, i. e. the program
+does not assume it to be `;` when the user sets a different value.
+
+## Version 0.02 (2014-08-01)
+
+A side-by-side comparison containing the differences of both files is now shown.
+
+## Version 0.01 (2014-07-31)
+
+Initial version of the program. It only determines whether both .ini files are
+equal.

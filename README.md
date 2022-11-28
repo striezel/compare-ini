@@ -39,7 +39,7 @@ The program makes a few assumptions about the ini files:
       x = unknown      |     val = 1 
 
   If you try to compare ini files that do not meet these assumptions, then the
-  result of the comparision might not be as expected. (Of course, you are
+  result of the comparison might not be as expected. (Of course, you are
   always free to give it a try anyway.)
 
 ## Is there any kind of documentation for the program?
