@@ -1,9 +1,6 @@
-# We might support earlier versions, too, but it's only tested with 2.8.9.
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 3.8)
 
 project(compare-ini)
-
-# add_definitions(-DDEF_NAME_HERE)
 
 set(compare_ini_sources
     Compare.cpp
@@ -13,10 +10,10 @@ set(compare_ini_sources
     StringFunctions.cpp
     main.cpp)
 
-if (CMAKE_COMPILER_IS_GNUCC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_definitions (-Wall -O3 -fexceptions)
-endif (CMAKE_COMPILER_IS_GNUCC)
 
-set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+    set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
+endif ()
 
 add_executable(compare-ini ${compare_ini_sources})
