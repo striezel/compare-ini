@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014  Thoronador
+    Copyright (C) 2014, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #include "EntryNotFoundException.hpp"
 
 EntryNotFoundException::EntryNotFoundException(const std::string& n)
-: m_Explain("The requested entry \""+n+"\" was not found!")
+: m_Explain("The requested entry \"" + n + "\" was not found!")
 {
 }
 

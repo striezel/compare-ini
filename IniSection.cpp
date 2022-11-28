@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014  Thoronador
+    Copyright (C) 2014, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -33,14 +33,14 @@ void IniSection::addValue(const std::string& name, const std::string& value)
 
 bool IniSection::hasValue(const std::string& name) const
 {
-  return (m_Values.find(name) != m_Values.end());
+  return m_Values.find(name) != m_Values.end();
 }
 
 const std::string& IniSection::getValue(const std::string& name) const
 {
   const std::map<std::string, std::string>::const_iterator iter =
           m_Values.find(name);
-  if (iter!=m_Values.end())
+  if (iter != m_Values.end())
     return iter->second;
   throw EntryNotFoundException(name);
 }
@@ -50,11 +50,11 @@ std::vector<std::string> IniSection::getValueNames() const
   std::vector<std::string> result;
   std::map<std::string, std::string>::const_iterator iter =
           m_Values.begin();
-  while (iter!=m_Values.end())
+  while (iter != m_Values.end())
   {
     result.push_back(iter->first);
     ++iter;
-  } //while
+  }
   return result;
 }
 
@@ -66,22 +66,22 @@ void IniSection::clear()
 bool IniSection::hasSameValues(const IniSection& other) const
 {
   std::vector<std::string> otherNames = other.getValueNames();
-  if (otherNames.size()!=m_Values.size())
+  if (otherNames.size() != m_Values.size())
     return false;
   std::map<std::string, std::string>::const_iterator iter =
           m_Values.begin();
-  while (iter!=m_Values.end())
+  while (iter != m_Values.end())
   {
     if (!other.hasValue(iter->first))
       return false;
     if (other.getValue(iter->first) != iter->second)
         return false;
     ++iter;
-  } //while
+  }
   return true;
 }
 
 bool IniSection::hasSameKeys(const IniSection& other) const
 {
-  return (getValueNames()==other.getValueNames());
+  return getValueNames() == other.getValueNames();
 }

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014  Thoronador
+    Copyright (C) 2014, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,11 +29,10 @@
 class Ini
 {
   public:
-    ///constructor
     Ini();
 
 
-    /** \brief adds a new section to the ini or replaces an existing section of the same name
+    /** \brief Adds a new section to the ini or replaces an existing section of the same name.
      *
      * \param name the name of the section
      * \param value the section
@@ -41,7 +40,7 @@ class Ini
     void addSection(const std::string& name, const IniSection& section);
 
 
-    /** \brief check if a section exists within the ini
+    /** \brief Checks if a section exists within the ini.
      *
      * \param name the name of the section
      * \return Returns true, if the section exists; returns false otherwise.
@@ -49,7 +48,7 @@ class Ini
     bool hasSection(const std::string& name) const;
 
 
-    /** \brief retrieve a section
+    /** \brief Retrieves a section.
      *
      * \param name the name of the requested section
      * \return Returns the section, if a section with the given name is present.
@@ -59,21 +58,21 @@ class Ini
     const IniSection& getSection(const std::string& name) const;
 
 
-    /** \brief returns a vector containing the names of all sections in the ini
+    /** \brief Returns a vector containing the names of all sections in the ini.
      *
      * \return vector of std::strings containing the section names
      */
     std::vector<std::string> getSectionNames() const;
 
 
-    /** \brief returns the character that starts line comments
+    /** \brief Returns the character that starts line comments.
      *
      * \return current comment character
      */
     char getCommentCharacter() const;
 
 
-    /** \brief sets the comment character, i.e. the char that starts line comments
+    /** \brief Sets the comment character, i.e. the char that starts line comments.
      *
      * \param cc the new comment character
      * \return Returns true, if the new comment character was set.
@@ -87,14 +86,14 @@ class Ini
     bool setCommentCharacter(const char cc);
 
 
-    /** \brief removes all sections from the ini
+    /** \brief Removes all sections from the ini.
      */
     void clear();
 
 
-    /** \brief tries to read all ini data from a given file
+    /** \brief Tries to read all .ini data from a given file.
      *
-     * \param fileName path to the ini file
+     * \param fileName path to the .ini file
      * \param lineCount var that tracks the current line number in case of errors
      * \param error var that holds the error message in case of errors
      * \return Returns true, if the read was successful. Returns false otherwise.
@@ -102,15 +101,15 @@ class Ini
     bool read(const std::string& fileName, unsigned int& lineCount, std::string& error);
 
 
-    /** \brief determines whether this ini and another section have the same
-     *         sections with the same key-value pairs
+    /** \brief Determines whether this ini and another section have the same
+     *         sections with the same key-value pairs.
      * \param other the other ini
      * \return Returns true, if both ini contents are equal. Returns false otherwise.
      */
     bool hasSameContent(const Ini& other) const;
 
 
-    /** \brief determines whether this ini and another ini have the same section names
+    /** \brief Determines whether this ini and another ini have the same section names.
      *
      * \param other the other ini
      * \return Returns true, if Section names are equal. Returns false otherwise.
@@ -119,6 +118,6 @@ class Ini
   private:
     std::map<std::string, IniSection> m_Sections;
     char m_CommentChar;
-}; //class
+}; // class
 
 #endif // INI_HPP

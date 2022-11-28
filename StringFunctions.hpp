@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
-    This file is part of the Morrowind Tools Project.
-    Copyright (C) 2011 Thoronador
+    This file is part of the compare-ini tool.
+    Copyright (C) 2011, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,20 +23,19 @@
 
 #include <string>
 
-/* removes all leading and trailing spaces and (horizontal) tabulators from the
-   given string
-
-   parameters:
-       str1 - the affected string
-*/
+/** \brief Removes all leading and trailing spaces and (horizontal) tabulators
+ * from the given string.
+ *
+ * \param str1  the affected string
+ */
 void trim(std::string& str1);
 
-/*tries to remove the bracket pair surrounding the rest of the string, if they
-  match. Returns true, if something was removed, false otherwise.
-
-  parameters:
-      expr - the string
-*/
+/** \brief Tries to remove the bracket pair surrounding the rest of the string,
+ * if they match.
+ *
+ * \param expr  the string
+ * \return Returns true, if something was removed, false otherwise.
+ */
 bool removeEnclosingBrackets(std::string& expr);
 
 #endif // STRINGFUNCTIONS_HPP

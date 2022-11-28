@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014  Thoronador
+    Copyright (C) 2014, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -38,14 +38,14 @@ void Ini::addSection(const std::string& name, const IniSection& section)
 
 bool Ini::hasSection(const std::string& name) const
 {
-  return (m_Sections.find(name) != m_Sections.end());
+  return m_Sections.find(name) != m_Sections.end();
 }
 
 const IniSection& Ini::getSection(const std::string& name) const
 {
   const std::map<std::string, IniSection>::const_iterator iter =
           m_Sections.find(name);
-  if (iter!=m_Sections.end())
+  if (iter != m_Sections.end())
     return iter->second;
   throw EntryNotFoundException(name);
 }
@@ -55,11 +55,11 @@ std::vector<std::string> Ini::getSectionNames() const
   std::vector<std::string> result;
   std::map<std::string, IniSection>::const_iterator iter =
           m_Sections.begin();
-  while (iter!=m_Sections.end())
+  while (iter != m_Sections.end())
   {
     result.push_back(iter->first);
     ++iter;
-  } //while
+  }
   return result;
 }
 
@@ -70,7 +70,7 @@ char Ini::getCommentCharacter() const
 
 bool Ini::setCommentCharacter(const char cc)
 {
-  if (cc!='[' && std::isgraph(cc))
+  if (cc != '[' && std::isgraph(static_cast<unsigned char>(cc)))
   {
     m_CommentChar = cc;
     return true;
@@ -90,7 +90,7 @@ bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string
   input.open(fileName.c_str(), std::ios::binary | std::ios::in);
   if (!input.good())
   {
-    error = "Could not open file "+fileName+" for reading!";
+    error = "Could not open file " + fileName + " for reading!";
     return false;
   }
 
@@ -98,67 +98,66 @@ bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string
   const unsigned int buff_size = 4096;
   char buffer[buff_size];
   memset(buffer, '\0', buff_size);
-  while (input.getline(buffer, buff_size-1))
+  while (input.getline(buffer, buff_size - 1))
   {
     ++lineCount;
     std::string line(buffer);
     trim(line);
-    if (!line.empty())
+    if (line.empty())
+      continue;
+    if (line[0] == m_CommentChar)
+      continue;
+
+    // new section?
+    if (line[0] == '[')
     {
-      if (line[0]!= m_CommentChar)
+      // try to remove brackets
+      if (!removeEnclosingBrackets(line))
       {
-        //new section?
-        if (line[0]=='[')
-        {
-          //try to remove brackets
-          if (!removeEnclosingBrackets(line))
-          {
-            input.close();
-            error = "No closing bracket in section line!";
-            return false;
-          }
-          if (line.empty())
-          {
-            input.close();
-            error = "Empty section name!";
-            return false;
-          }
-          currentSection = line;
-        } //if section
-        //normal line / key-value pair
-        else
-        {
-          std::string::size_type pos = line.find('=');
-          if (pos == std::string::npos)
-          {
-            //failure
-            input.close();
-            error = "No equality sign in key-value line!";
-            return false;
-          }
-          std::string key = line.substr(0, pos);
-          trim(key);
-          if (key.empty())
-          {
-            //no empty keys!
-            input.close();
-            error = "Empty key name!";
-            return false;
-          }
-          std::string value = line.substr(pos);
-          value.erase(0, 1); //remove '='
-          trim(value);
+        input.close();
+        error = "No closing bracket in section line!";
+        return false;
+      }
+      if (line.empty())
+      {
+        input.close();
+        error = "Empty section name!";
+        return false;
+      }
+      currentSection = line;
+    }
+    // normal line / key-value pair
+    else
+    {
+      std::string::size_type pos = line.find('=');
+      if (pos == std::string::npos)
+      {
+        // failure
+        input.close();
+        error = "No equality sign in key-value line!";
+        return false;
+      }
+      std::string key = line.substr(0, pos);
+      trim(key);
+      if (key.empty())
+      {
+        // no empty keys!
+        input.close();
+        error = "Empty key name!";
+        return false;
+      }
+      std::string value = line.substr(pos);
+      value.erase(0, 1); // remove '='
+      trim(value);
 
-          if (!hasSection(currentSection))
-          {
-              m_Sections[currentSection] = IniSection();
-          }
+      if (!hasSection(currentSection))
+      {
+          m_Sections[currentSection] = IniSection();
+      }
 
-          m_Sections[currentSection].addValue(key, value);
-        } //else
-      } //if not comment
-    } //if not empty
-  }//while
+      m_Sections[currentSection].addValue(key, value);
+    }
+  }
   const bool eof_reached = input.eof();
   input.close();
   error = "eof bit";
@@ -168,22 +167,22 @@ bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string
 bool Ini::hasSameContent(const Ini& other) const
 {
   std::vector<std::string> otherNames = other.getSectionNames();
-  if (otherNames.size()!=m_Sections.size())
+  if (otherNames.size() != m_Sections.size())
     return false;
   std::map<std::string, IniSection>::const_iterator iter =
           m_Sections.begin();
-  while (iter!=m_Sections.end())
+  while (iter != m_Sections.end())
   {
     if (!other.hasSection(iter->first))
       return false;
     if (!other.getSection(iter->first).hasSameValues(iter->second))
         return false;
     ++iter;
-  } //while
+  }
   return true;
 }
 
 bool Ini::hasSameSectionNames(const Ini& other) const
 {
-  return (getSectionNames()==other.getSectionNames());
+  return getSectionNames() == other.getSectionNames();
 }

@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014  Thoronador
+    Copyright (C) 2014, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,11 +28,10 @@
 class IniSection
 {
   public:
-    //constructor
     IniSection();
 
 
-    /** \brief add a new value to the section or replace an existing value
+    /** \brief Add a new value to the section or replace an existing value.
      *
      * \param name the name of the entry
      * \param value the value of the entry
@@ -40,7 +39,7 @@ class IniSection
     void addValue(const std::string& name, const std::string& value);
 
 
-    /** \brief check if a name / key exists in the current section
+    /** \brief Checks if a name / key exists in the current section.
      *
      * \param name the name of the value
      * \return Returns true, if the value exists; returns false otherwise.
@@ -48,7 +47,7 @@ class IniSection
     bool hasValue(const std::string& name) const;
 
 
-    /** \brief retrieve value of an entry
+    /** \brief Retrieves value of an entry.
      *
      * \param name the name of the entry
      * \return Returns the entry's value, if an entry with the given name is present.
@@ -58,27 +57,27 @@ class IniSection
     const std::string& getValue(const std::string& name) const;
 
 
-    /** \brief returns a vector containing the names of all values in the ini
+    /** \brief Returns a vector containing the names of all values in the ini.
      *
      * \return vector of std::strings containing the value names
      */
     std::vector<std::string> getValueNames() const;
 
 
-    /** \brief deletes all values from the current section
+    /** \brief Deletes all values from the current section.
      */
     void clear();
 
 
-    /** \brief determines whether this section and another section have the same
-     *         key-value pairs
+    /** \brief Determines whether this section and another section have the same
+     *         key-value pairs.
      * \param other the other section
      * \return Returns true, if key-value pairs are equal. Returns false otherwise.
      */
     bool hasSameValues(const IniSection& other) const;
 
 
-    /** \brief determines whether this section and another section have the same key names
+    /** \brief Determines whether this section and another section have the same key names.
      *
      * \param other the other section
      * \return Returns true, if key names are equal. Returns false otherwise.
@@ -86,6 +85,6 @@ class IniSection
     bool hasSameKeys(const IniSection& other) const;
   private:
     std::map<std::string, std::string> m_Values;
-}; //class
+}; // class
 
 #endif // INISECTION_HPP

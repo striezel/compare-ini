@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014  Thoronador
+    Copyright (C) 2014, 2022  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,20 +27,18 @@
 class EntryNotFoundException : public std::exception
 {
   public:
-    /// constructor
     EntryNotFoundException(const std::string& n);
 
 
-    /// destructor
     virtual ~EntryNotFoundException() throw() {}
 
 
-    /** \brief returns the explanatory string
+    /** \brief Returns the explanatory string.
      * \return pointer to a NUL-terminated, explanatory C-string
      */
     virtual const char* what() const throw();
   private:
     std::string m_Explain;
-}; //class
+}; // class
 
 #endif // ENTRYNOTFOUNDEXCEPTION_HPP
