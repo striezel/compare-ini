@@ -43,8 +43,7 @@ bool Ini::hasSection(const std::string& name) const
 
 const IniSection& Ini::getSection(const std::string& name) const
 {
-  const std::map<std::string, IniSection>::const_iterator iter =
-          m_Sections.find(name);
+  const auto iter = m_Sections.find(name);
   if (iter != m_Sections.end())
     return iter->second;
   throw EntryNotFoundException(name);
@@ -53,12 +52,9 @@ const IniSection& Ini::getSection(const std::string& name) const
 std::vector<std::string> Ini::getSectionNames() const
 {
   std::vector<std::string> result;
-  std::map<std::string, IniSection>::const_iterator iter =
-          m_Sections.begin();
-  while (iter != m_Sections.end())
+  for (const auto& section: m_Sections)
   {
-    result.push_back(iter->first);
-    ++iter;
+    result.push_back(section.first);
   }
   return result;
 }
@@ -169,15 +165,12 @@ bool Ini::hasSameContent(const Ini& other) const
   std::vector<std::string> otherNames = other.getSectionNames();
   if (otherNames.size() != m_Sections.size())
     return false;
-  std::map<std::string, IniSection>::const_iterator iter =
-          m_Sections.begin();
-  while (iter != m_Sections.end())
+  for (const auto& section: m_Sections)
   {
-    if (!other.hasSection(iter->first))
+    if (!other.hasSection(section.first))
       return false;
-    if (!other.getSection(iter->first).hasSameValues(iter->second))
+    if (!other.getSection(section.first).hasSameValues(section.second))
         return false;
-    ++iter;
   }
   return true;
 }

@@ -29,7 +29,7 @@ const int rcFileError        = 2;
 void showGPLNotice()
 {
   std::cout << "compare-ini\n"
-            << "  Copyright (C) 2014  Dirk Stolle\n"
+            << "  Copyright (C) 2014, 2022  Dirk Stolle\n"
             << "\n"
             << "  This program is free software: you can redistribute it and/or modify\n"
             << "  it under the terms of the GNU General Public License as published by\n"
@@ -84,12 +84,12 @@ int main(int argc, char **argv)
   char commentCharacterFirst = '\0';
   char commentCharacterSecond = '\0';
 
-  if ((argc > 1) && (argv != NULL))
+  if ((argc > 1) && (argv != nullptr))
   {
     int i = 1;
     while (i < argc)
     {
-      if (argv[i] != NULL)
+      if (argv[i] != nullptr)
       {
         const std::string param = std::string(argv[i]);
         // help parameter
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
             return rcInvalidParameter;
           }
           // enough arguments left?
-          if ((i + 1 < argc) && (argv[i+1] != NULL))
+          if ((i + 1 < argc) && (argv[i+1] != nullptr))
           {
             const std::string cc = std::string(argv[i+1]);
             if (cc.size() != 1)
@@ -156,7 +156,7 @@ int main(int argc, char **argv)
             return rcInvalidParameter;
           }
           // enough arguments left?
-          if ((i + 1 < argc) && (argv[i+1] != NULL))
+          if ((i + 1 < argc) && (argv[i+1] != nullptr))
           {
             const std::string cc = std::string(argv[i+1]);
             if (cc.size() != 1)
@@ -185,12 +185,12 @@ int main(int argc, char **argv)
             return rcInvalidParameter;
           }
           // enough arguments left?
-          if ((i + 1 < argc) && (argv[i+1] != NULL))
+          if ((i + 1 < argc) && (argv[i+1] != nullptr))
           {
             const std::string cc = std::string(argv[i+1]);
             if (cc.size() != 1)
             {
-              std::cout << "Error: comment character parameter must be exactly one character!\n";
+              std::cout << "Error: Comment character parameter must be exactly one character!\n";
               return rcInvalidParameter;
             }
             commentCharacterSecond = cc[0];
@@ -309,7 +309,7 @@ int main(int argc, char **argv)
     return rcInvalidParameter;
   }
   lc = 0;
-  error_msg = "";
+  error_msg.clear();
   if (!ini_second.read(second, lc, error_msg))
   {
     std::cout << "Failed to read ini from " << second << ".\nLine: " << lc
@@ -328,24 +328,22 @@ int main(int argc, char **argv)
     out_right.insert(out_right.begin(), second);
 
     std::string::size_type maxLeftLength = 0;
-    std::vector<std::string>::const_iterator cLeftIter = out_left.begin();
-    while (cLeftIter != out_left.end())
+    for (const auto& left_item: out_left)
     {
-      const std::string::size_type l = cLeftIter->size();
+      const std::string::size_type l = left_item.size();
       if (l > maxLeftLength)
         maxLeftLength = l;
-      ++cLeftIter;
     }
 
     // output
     std::cout << std::endl;
-    cLeftIter = out_left.begin();
-    std::vector<std::string>::const_iterator cRightIter = out_right.begin();
-    while (cLeftIter != out_left.end())
+    auto left_iter = out_left.cbegin();
+    auto right_iter = out_right.cbegin();
+    while (left_iter != out_left.cend())
     {
-      std::cout << pad(*cLeftIter, maxLeftLength) << " | " << *cRightIter << std::endl;
-      ++cLeftIter;
-      ++cRightIter;
+      std::cout << pad(*left_iter, maxLeftLength) << " | " << *right_iter << std::endl;
+      ++left_iter;
+      ++right_iter;
     }
   } // if different / comparison needed
 

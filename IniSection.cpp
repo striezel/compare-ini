@@ -38,8 +38,7 @@ bool IniSection::hasValue(const std::string& name) const
 
 const std::string& IniSection::getValue(const std::string& name) const
 {
-  const std::map<std::string, std::string>::const_iterator iter =
-          m_Values.find(name);
+  const auto iter = m_Values.find(name);
   if (iter != m_Values.end())
     return iter->second;
   throw EntryNotFoundException(name);
@@ -48,12 +47,9 @@ const std::string& IniSection::getValue(const std::string& name) const
 std::vector<std::string> IniSection::getValueNames() const
 {
   std::vector<std::string> result;
-  std::map<std::string, std::string>::const_iterator iter =
-          m_Values.begin();
-  while (iter != m_Values.end())
+  for (const auto& value: m_Values)
   {
-    result.push_back(iter->first);
-    ++iter;
+    result.push_back(value.first);
   }
   return result;
 }
@@ -68,15 +64,12 @@ bool IniSection::hasSameValues(const IniSection& other) const
   std::vector<std::string> otherNames = other.getValueNames();
   if (otherNames.size() != m_Values.size())
     return false;
-  std::map<std::string, std::string>::const_iterator iter =
-          m_Values.begin();
-  while (iter != m_Values.end())
+  for (const auto& value: m_Values)
   {
-    if (!other.hasValue(iter->first))
+    if (!other.hasValue(value.first))
       return false;
-    if (other.getValue(iter->first) != iter->second)
+    if (other.getValue(value.first) != value.second)
         return false;
-    ++iter;
   }
   return true;
 }
