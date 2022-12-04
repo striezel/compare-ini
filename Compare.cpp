@@ -69,7 +69,7 @@ void compare(const Ini& left, const Ini& right, std::vector<std::string>& out_le
         const IniSection& rightSec = right.getSection(section);
 
         std::set<std::string> values;
-        std::vector<std::string> res = leftSec.getValueNames();
+        res = leftSec.getValueNames();
         for (const auto& val_name: res)
         {
           values.insert(val_name);
