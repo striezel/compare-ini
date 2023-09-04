@@ -1,4 +1,4 @@
-image: debian:11-slim
+image: debian:12-slim
 
 # Build with GCC / G++.
 build_gcc:
