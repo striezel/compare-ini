@@ -11,7 +11,7 @@ jobs:
         version: [10, 11, 12]
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE.
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Debian packages
         run: |
           sudo apt-get update
@@ -32,7 +32,7 @@ jobs:
         version: [12, 13, 14]
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE.
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Debian packages
         run: |
           sudo apt-get update
@@ -54,7 +54,7 @@ jobs:
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE.
       - name: Repository checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install MSYS2 packages
         uses: msys2/setup-msys2@v2
         with:
