@@ -1,56 +1,47 @@
-name: MSYS2
+name: Alpine
 
 on: push
 
 jobs:
-  msys2_mingw64:
-    runs-on: windows-2022
-    defaults:
-      run:
-        shell: msys2 {0}
+  alpine:
+    runs-on: ubuntu-22.04
+    container: alpine:latest
     steps:
+      - name: Install and prepare Git
+        run: |
+          apk update && apk upgrade
+          apk add git
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
       # Checks-out the repository under $GITHUB_WORKSPACE.
-      - name: Repository checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install MSYS2 packages
-        uses: msys2/setup-msys2@v2
-        with:
-          msystem: mingw64
-          update: true
-          install: >-
-            git
-            mingw-w64-x86_64-cmake
-            mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-ninja
+      - name: Install packages
+        run: |
+          apk update
+          apk add cmake g++ make pkgconf
       - name: Build
         run: |
-          export MSYSTEM=MINGW64
-          export CXX=g++
-          export CC=gcc
           cd "$GITHUB_WORKSPACE"
           mkdir build
           cd build
+          export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
           cmake ../
           cmake --build . -j2
-      - name: Statically linked build
+      - name: Build statically linked executable
         run: |
-          export MSYSTEM=MINGW64
-          export CXX=g++
-          export CC=gcc
           cd "$GITHUB_WORKSPACE"
           mkdir build-static
           cd build-static
+          export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
           cmake ../ -DENABLE_LTO=ON -DENABLE_STATIC_LINKING=ON
           cmake --build . -j2
       - name: Collect build artifacts
         run: |
-          export MSYSTEM=MINGW64
           mkdir -p "$GITHUB_WORKSPACE"/artifacts
           cd "$GITHUB_WORKSPACE"
           # binary file
-          cp build-static/compare-ini.exe artifacts/
+          cp build-static/compare-ini artifacts/
           # license + changelog + readme
           cp LICENSE artifacts/
           cp CHANGELOG.md artifacts/
@@ -59,10 +50,10 @@ jobs:
           VERSION=$(git describe --always)
           echo Version is $VERSION.
           mv artifacts compare-ini-$VERSION
-          "C:\Program Files\7-Zip\7z.exe" a -r compare-ini_${VERSION}_win64.zip compare-ini-$VERSION
+          tar czf compare-ini_${VERSION}_linux-amd64-generic.tar.gz compare-ini-$VERSION
       - name: Archive build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: compare-ini_win64
-          path: compare-ini_*_win64.zip
+          name: compare-ini_linux-amd64-generic
+          path: compare-ini_*_linux-amd64-generic.tar.gz
           if-no-files-found: error
