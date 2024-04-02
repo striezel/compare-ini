@@ -1,0 +1,33 @@
+name: MSYS2
+
+on: push
+
+jobs:
+  msys2_mingw64:
+    runs-on: windows-2022
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE.
+      - name: Repository checkout
+        uses: actions/checkout@v4
+      - name: Install MSYS2 packages
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          update: true
+          install: >-
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-ninja
+      - name: Build
+        run: |
+          export MSYSTEM=MINGW64
+          export CXX=g++
+          export CC=gcc
+          cd "$GITHUB_WORKSPACE"
+          mkdir build
+          cd build
+          cmake ../
+          cmake --build . -j2

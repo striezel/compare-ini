@@ -1,0 +1,26 @@
+name: Clang
+
+on: push
+
+jobs:
+  clang:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        version: [12, 13, 14]
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE.
+      - uses: actions/checkout@v4
+      - name: Install Debian packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake clang-${{ matrix.version }} pkg-config
+      - name: Build with Clang ${{ matrix.version }}
+        run: |
+          export CXX=clang++-${{ matrix.version }}
+          export CC=clang-${{ matrix.version }}
+          cd $GITHUB_WORKSPACE
+          mkdir build
+          cd build
+          cmake ../
+          make -j2
