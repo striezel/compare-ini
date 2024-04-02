@@ -31,3 +31,13 @@ jobs:
           cd build
           cmake ../
           cmake --build . -j2
+      - name: Statically linked build
+        run: |
+          export MSYSTEM=MINGW64
+          export CXX=g++
+          export CC=gcc
+          cd "$GITHUB_WORKSPACE"
+          mkdir build-static
+          cd build-static
+          cmake ../ -DENABLE_LTO=ON -DENABLE_STATIC_LINKING=ON
+          cmake --build . -j2
