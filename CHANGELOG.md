@@ -2,6 +2,11 @@
 
 _(Note: Smaller fixes or improvements may be omitted.)_
 
+## Version 0.?.? (2024-04-??)
+
+Error messages are now shown on standard error stream instead of the standard
+output stream.
+
 ## Version 0.5.0 (2022-11-28)
 
 The minimum required CMake version for compiling the project is raised from 2.8

@@ -55,6 +55,25 @@ files you want to compare. An example would be:
 
 This would compare the files `/path/to/foo.ini` and `bar.ini` with each other.
 
+## Usage
+
+```
+compare-ini [options] /path/to/first.ini /path/to/second.ini
+
+options:
+  --help    | -?     - Displays this help message and quits.
+  --version | -v     - Displays the version of the program and quits.
+  --license | -l     - Shows license information and quits.
+  --comment C        - Sets comment character to C.
+  -c C | -cC         - short forms of --comment C
+  --comment-left C   - Sets comment character of first ini to C.
+  --comment-first C  - Sets comment character of first ini to C.
+  --comment-right C  - Sets comment character of second ini to C.
+  --comment-second C - Sets comment character of second ini to C.
+  -c1 C | -cl C      - short forms of --comment-left C
+  -c2 C | -cr C      - short forms of --comment-right C
+```
+
 ## Building the program from source
 
 It is very easy to build the program, provided you have CMake on your build

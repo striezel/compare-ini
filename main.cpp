@@ -53,13 +53,13 @@ void showHelp()
             << "options:\n"
             << "  --help    | -?     - Displays this help message and quits.\n"
             << "  --version | -v     - Displays the version of the program and quits.\n"
-            << "  --license | -l     - Show license information.\n"
-            << "  --comment C        - Set comment character to C.\n"
+            << "  --license | -l     - Shows license information and quits.\n"
+            << "  --comment C        - Sets comment character to C.\n"
             << "  -c C | -cC         - short forms of --comment C\n"
-            << "  --comment-left C   - Set comment character of first ini to C.\n"
-            << "  --comment-first C  - Set comment character of first ini to C.\n"
-            << "  --comment-right C  - Set comment character of second ini to C.\n"
-            << "  --comment-second C - Set comment character of second ini to C.\n"
+            << "  --comment-left C   - Sets comment character of first ini to C.\n"
+            << "  --comment-first C  - Sets comment character of first ini to C.\n"
+            << "  --comment-right C  - Sets comment character of second ini to C.\n"
+            << "  --comment-second C - Sets comment character of second ini to C.\n"
             << "  -c1 C | -cl C      - short forms of --comment-left C\n"
             << "  -c2 C | -cr C      - short forms of --comment-right C\n";
 }
@@ -115,13 +115,13 @@ int main(int argc, char **argv)
         {
           if (commentCharacterFirst != '\0')
           {
-            std::cout << "First/left comment character was already set to '"
+            std::cerr << "First/left comment character was already set to '"
                       << commentCharacterFirst << "'.\n";
             return rcInvalidParameter;
           }
           if (commentCharacterSecond != '\0')
           {
-            std::cout << "Second/right comment character was already set to '"
+            std::cerr << "Second/right comment character was already set to '"
                       << commentCharacterSecond << "'.\n";
             return rcInvalidParameter;
           }
@@ -131,7 +131,7 @@ int main(int argc, char **argv)
             const std::string cc = std::string(argv[i+1]);
             if (cc.size() != 1)
             {
-              std::cout << "Error: Comment character parameter must be exactly one character!\n";
+              std::cerr << "Error: Comment character parameter must be exactly one character!\n";
               return rcInvalidParameter;
             }
             commentCharacterFirst = cc[0];
@@ -141,7 +141,7 @@ int main(int argc, char **argv)
           }
           else
           {
-            std::cout << "Error: You have to specify a comment character after \""
+            std::cerr << "Error: You have to specify a comment character after \""
                       << param << "\".\n";
             return rcInvalidParameter;
           }
@@ -151,7 +151,7 @@ int main(int argc, char **argv)
         {
           if (commentCharacterFirst != '\0')
           {
-            std::cout << "First/left comment character was already set to '"
+            std::cerr << "First/left comment character was already set to '"
                       << commentCharacterFirst << "'.\n";
             return rcInvalidParameter;
           }
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
             const std::string cc = std::string(argv[i+1]);
             if (cc.size() != 1)
             {
-              std::cout << "Error: Comment character parameter must be exactly one character!\n";
+              std::cerr << "Error: Comment character parameter must be exactly one character!\n";
               return rcInvalidParameter;
             }
             commentCharacterFirst = cc[0];
@@ -170,7 +170,7 @@ int main(int argc, char **argv)
           }
           else
           {
-            std::cout << "Error: You have to specify a comment character after \""
+            std::cerr << "Error: You have to specify a comment character after \""
                       << param << "\".\n";
             return rcInvalidParameter;
           }
@@ -180,7 +180,7 @@ int main(int argc, char **argv)
         {
           if (commentCharacterSecond != '\0')
           {
-            std::cout << "Second/right comment character was already set to '"
+            std::cerr << "Second/right comment character was already set to '"
                       << commentCharacterSecond << "'.\n";
             return rcInvalidParameter;
           }
@@ -190,7 +190,7 @@ int main(int argc, char **argv)
             const std::string cc = std::string(argv[i+1]);
             if (cc.size() != 1)
             {
-              std::cout << "Error: Comment character parameter must be exactly one character!\n";
+              std::cerr << "Error: Comment character parameter must be exactly one character!\n";
               return rcInvalidParameter;
             }
             commentCharacterSecond = cc[0];
@@ -199,7 +199,7 @@ int main(int argc, char **argv)
           }
           else
           {
-            std::cout << "Error: You have to specify a comment character after \""
+            std::cerr << "Error: You have to specify a comment character after \""
                       << param << "\".\n";
             return rcInvalidParameter;
           }
@@ -209,13 +209,13 @@ int main(int argc, char **argv)
         {
           if (commentCharacterFirst != '\0')
           {
-            std::cout << "First/left comment character was already set to '"
+            std::cerr << "First/left comment character was already set to '"
                       << commentCharacterFirst << "'.\n";
             return rcInvalidParameter;
           }
           if (commentCharacterSecond != '\0')
           {
-            std::cout << "Second/right comment character was already set to '"
+            std::cerr << "Second/right comment character was already set to '"
                       << commentCharacterSecond << "'.\n";
             return rcInvalidParameter;
           }
@@ -224,9 +224,9 @@ int main(int argc, char **argv)
         }
         else if ((param.size() == 4) && ((param.find("-c1") == 0) || (param.find("-cl") == 0)))
         {
-          if (commentCharacterFirst!='\0')
+          if (commentCharacterFirst != '\0')
           {
-            std::cout << "First/left comment character was already set to '"
+            std::cerr << "First/left comment character was already set to '"
                       << commentCharacterFirst << "'.\n";
             return rcInvalidParameter;
           }
@@ -236,7 +236,7 @@ int main(int argc, char **argv)
         {
           if (commentCharacterSecond != '\0')
           {
-            std::cout << "Second/right comment character was already set to '"
+            std::cerr << "Second/right comment character was already set to '"
                       << commentCharacterSecond << "'.\n";
             return rcInvalidParameter;
           }
@@ -253,14 +253,14 @@ int main(int argc, char **argv)
         else
         {
           // unknown or wrong parameter
-          std::cout << "Invalid parameter given: \"" << param << "\".\n"
+          std::cerr << "Invalid parameter given: \"" << param << "\".\n"
                     << "Use --help to get a list of valid parameters.\n";
           return rcInvalidParameter;
         }
       }
       else
       {
-        std::cout << "Parameter at index " << i << " is NULL.\n";
+        std::cerr << "Parameter at index " << i << " is NULL.\n";
         return rcInvalidParameter;
       }
       ++i; // on to next parameter
@@ -269,7 +269,7 @@ int main(int argc, char **argv)
 
   if (first.empty() || second.empty())
   {
-    std::cout << "Not enough parameters given: You have to specify two ini files to compare!\n";
+    std::cerr << "Not enough parameters given: You have to specify two ini files to compare!\n";
     return rcInvalidParameter;
   }
 
@@ -289,14 +289,14 @@ int main(int argc, char **argv)
   Ini ini_first;
   if (!ini_first.setCommentCharacter(commentCharacterFirst))
   {
-    std::cout << "Error: Invalid comment character specified!\n";
+    std::cerr << "Error: Invalid comment character specified!\n";
     return rcInvalidParameter;
   }
   unsigned int lc = 0;
   std::string error_msg = "";
   if (!ini_first.read(first, lc, error_msg))
   {
-    std::cout << "Failed to read ini from " << first << ".\nLine: " << lc
+    std::cerr << "Failed to read ini from " << first << ".\nLine: " << lc
               << "; message: " << error_msg << "\n";
     return rcFileError;
   }
@@ -305,14 +305,14 @@ int main(int argc, char **argv)
   Ini ini_second;
   if (!ini_second.setCommentCharacter(commentCharacterSecond))
   {
-    std::cout << "Error: Invalid comment character specified!\n";
+    std::cerr << "Error: Invalid comment character specified!\n";
     return rcInvalidParameter;
   }
   lc = 0;
   error_msg.clear();
   if (!ini_second.read(second, lc, error_msg))
   {
-    std::cout << "Failed to read ini from " << second << ".\nLine: " << lc
+    std::cerr << "Failed to read ini from " << second << ".\nLine: " << lc
               << "; message: " << error_msg << "\n";
     return rcFileError;
   }
