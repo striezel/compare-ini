@@ -42,10 +42,11 @@ jobs:
           cd "$GITHUB_WORKSPACE"
           # binary file
           cp build-static/compare-ini artifacts/
-          # license + changelog + readme
+          # license + changelog + readme + third-party notices
           cp LICENSE artifacts/
           cp CHANGELOG.md artifacts/
           cp README.md artifacts/
+          cp documentation/third-party.md artifacts/
           # determine version
           VERSION=$(git describe --always)
           echo Version is $VERSION.
