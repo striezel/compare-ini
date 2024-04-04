@@ -115,4 +115,57 @@ TEST_CASE("string functions")
       REQUIRE( s == "baz" );
     }
   }
+
+  SECTION("removeEnclosingBrackets")
+  {
+    SECTION("short strings")
+    {
+      std::string s;
+
+      REQUIRE_FALSE( removeEnclosingBrackets(s) );
+      REQUIRE( s.empty() );
+
+      s = "[";
+      REQUIRE_FALSE( removeEnclosingBrackets(s) );
+      REQUIRE( s == "[" );
+
+      s = "]";
+      REQUIRE_FALSE( removeEnclosingBrackets(s) );
+      REQUIRE( s == "]" );
+    }
+
+    SECTION("strings without matching brackets")
+    {
+      std::string s;
+
+      s = "foo";
+      REQUIRE_FALSE( removeEnclosingBrackets(s) );
+      REQUIRE( s == "foo" );
+
+      s = "[foo";
+      REQUIRE_FALSE( removeEnclosingBrackets(s) );
+      REQUIRE( s == "[foo" );
+
+      s = "foo]";
+      REQUIRE_FALSE( removeEnclosingBrackets(s) );
+      REQUIRE( s == "foo]" );
+    }
+
+    SECTION("strings with matching brackets")
+    {
+      std::string s;
+
+      s = "[foo]";
+      REQUIRE( removeEnclosingBrackets(s) );
+      REQUIRE( s == "foo" );
+
+      s = "[Bar]";
+      REQUIRE( removeEnclosingBrackets(s) );
+      REQUIRE( s == "Bar" );
+
+      s = "[foo bar baz]";
+      REQUIRE( removeEnclosingBrackets(s) );
+      REQUIRE( s == "foo bar baz" );
+    }
+  }
 }
