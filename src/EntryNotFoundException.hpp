@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014, 2022  Dirk Stolle
+    Copyright (C) 2014, 2022, 2024  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,11 @@
 class EntryNotFoundException : public std::exception
 {
   public:
-    EntryNotFoundException(const std::string& n);
+      /** \brief Constructs a new exception object.
+       *
+       * \param name    name of the entry that was not found
+       */
+    explicit EntryNotFoundException(const std::string& name);
 
 
     virtual ~EntryNotFoundException() throw() {}

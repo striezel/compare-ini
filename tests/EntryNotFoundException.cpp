@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
-    This file is part of the compare-ini tool.
-    Copyright (C) 2014, 2022  Dirk Stolle
+    This file is part of the test suite for compare-ini.
+    Copyright (C) 2024  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,14 +18,22 @@
  -------------------------------------------------------------------------------
 */
 
-#include "EntryNotFoundException.hpp"
+#include "locate_catch.hpp"
+#include "../src/EntryNotFoundException.hpp"
 
-EntryNotFoundException::EntryNotFoundException(const std::string& name)
-: m_Explain("The requested entry \"" + name + "\" was not found!")
+TEST_CASE("EntryNotFoundException")
 {
-}
+  SECTION("all in one: foo")
+  {
+    EntryNotFoundException ex{"foo"};
+    REQUIRE_FALSE( ex.what() == nullptr );
+    REQUIRE( ex.what() == std::string("The requested entry \"foo\" was not found!") );
+  }
 
-const char* EntryNotFoundException::what() const throw()
-{
-  return m_Explain.c_str();
+  SECTION("all in one: bar")
+  {
+    EntryNotFoundException ex{"bar"};
+    REQUIRE_FALSE( ex.what() == nullptr );
+    REQUIRE( ex.what() == std::string("The requested entry \"bar\" was not found!") );
+  }
 }

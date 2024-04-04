@@ -11,7 +11,9 @@ endif ()
 project(component_tests)
 
 set(component_tests_sources
+    ../src/EntryNotFoundException.cpp
     ../src/StringFunctions.cpp
+    EntryNotFoundException.cpp
     StringFunctions.cpp
     main.cpp)
 
