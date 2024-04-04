@@ -23,46 +23,46 @@
 
 TEST_CASE("IniSection")
 {
-  SECTION("addValue / hasValue / getValue")
+  SECTION("addEntry / hasEntry / getValue")
   {
     SECTION("empty section")
     {
       IniSection section;
-      REQUIRE_FALSE( section.hasValue("foo") );
+      REQUIRE_FALSE( section.hasEntry("foo") );
       REQUIRE_THROWS( section.getValue("foo") );
     }
 
     SECTION("add some values")
     {
       IniSection section;
-      REQUIRE_FALSE( section.hasValue("foo") );
-      section.addValue("foo", "bar value");
-      REQUIRE( section.hasValue("foo") );
+      REQUIRE_FALSE( section.hasEntry("foo") );
+      section.addEntry("foo", "bar value");
+      REQUIRE( section.hasEntry("foo") );
       REQUIRE_NOTHROW( section.getValue("foo") );
       REQUIRE( section.getValue("foo") == "bar value" );
 
-      REQUIRE_FALSE( section.hasValue("bar") );
+      REQUIRE_FALSE( section.hasEntry("bar") );
       REQUIRE_THROWS( section.getValue("bar") );
-      section.addValue("bar", "123");
-      REQUIRE( section.hasValue("bar") );
+      section.addEntry("bar", "123");
+      REQUIRE( section.hasEntry("bar") );
       REQUIRE( section.getValue("bar") == "123" );
     }
   }
 
-  SECTION("getValueNames")
+  SECTION("getEntryNames")
   {
     IniSection section;
-    REQUIRE( section.getValueNames().empty() );
+    REQUIRE( section.getEntryNames().empty() );
 
-    section.addValue("foo", "bar");
-    auto names = section.getValueNames();
+    section.addEntry("foo", "bar");
+    auto names = section.getEntryNames();
     REQUIRE( names.size() == 1 );
     REQUIRE( names.at(0) == "foo" );
 
-    section.addValue("bar", "test");
-    section.addValue("quux", "test2");
+    section.addEntry("bar", "test");
+    section.addEntry("quux", "test2");
 
-    names = section.getValueNames();
+    names = section.getEntryNames();
     REQUIRE( names.size() == 3 );
     REQUIRE( names.at(0) == "bar" );
     REQUIRE( names.at(1) == "foo" );
@@ -73,21 +73,21 @@ TEST_CASE("IniSection")
   {
     IniSection section;
 
-    section.addValue("foo", "bar");
-    section.addValue("bar", "test");
-    section.addValue("quux", "test2");
+    section.addEntry("foo", "bar");
+    section.addEntry("bar", "test");
+    section.addEntry("quux", "test2");
 
-    REQUIRE( section.getValueNames().size() == 3 );
-    REQUIRE( section.hasValue("foo") );
-    REQUIRE( section.hasValue("bar") );
-    REQUIRE( section.hasValue("quux") );
+    REQUIRE( section.getEntryNames().size() == 3 );
+    REQUIRE( section.hasEntry("foo") );
+    REQUIRE( section.hasEntry("bar") );
+    REQUIRE( section.hasEntry("quux") );
 
     section.clear();
 
-    REQUIRE_FALSE( section.hasValue("foo") );
-    REQUIRE_FALSE( section.hasValue("bar") );
-    REQUIRE_FALSE( section.hasValue("quux") );
-    REQUIRE( section.getValueNames().empty() );
+    REQUIRE_FALSE( section.hasEntry("foo") );
+    REQUIRE_FALSE( section.hasEntry("bar") );
+    REQUIRE_FALSE( section.hasEntry("quux") );
+    REQUIRE( section.getEntryNames().empty() );
   }
 
   SECTION("hasSameKeys")
@@ -105,10 +105,10 @@ TEST_CASE("IniSection")
     {
       SECTION("same keys, same values")
       {
-        a.addValue("foo", "1");
-        a.addValue("blob", "blah");
-        b.addValue("foo", "1");
-        b.addValue("blob", "blah");
+        a.addEntry("foo", "1");
+        a.addEntry("blob", "blah");
+        b.addEntry("foo", "1");
+        b.addEntry("blob", "blah");
 
         REQUIRE( a.hasSameKeys(b) );
         REQUIRE( b.hasSameKeys(a) );
@@ -116,8 +116,8 @@ TEST_CASE("IniSection")
 
       SECTION("same keys, different values")
       {
-        a.addValue("foo", "1");
-        b.addValue("foo", "2");
+        a.addEntry("foo", "1");
+        b.addEntry("foo", "2");
 
         REQUIRE( a.hasSameKeys(b) );
         REQUIRE( b.hasSameKeys(a) );
@@ -126,56 +126,71 @@ TEST_CASE("IniSection")
 
     SECTION("different keys")
     {
-      a.addValue("foo", "1");
+      a.addEntry("foo", "1");
       REQUIRE_FALSE( a.hasSameKeys(b) );
       REQUIRE_FALSE( b.hasSameKeys(a) );
 
-      b.addValue("blob", "blah");
+      b.addEntry("blob", "blah");
       REQUIRE_FALSE( a.hasSameKeys(b) );
       REQUIRE_FALSE( b.hasSameKeys(a) );
     }
   }
 
-  SECTION("hasSameValues")
+  SECTION("equality / inequality operator")
   {
     IniSection a;
     IniSection b;
 
     SECTION("empty")
     {
-      REQUIRE( a.hasSameValues(b) );
-      REQUIRE( b.hasSameValues(a) );
+      REQUIRE( a == b );
+      REQUIRE( b == a );
+
+      REQUIRE_FALSE( a != b );
+      REQUIRE_FALSE( b != a );
     }
 
     SECTION("same keys, same values")
     {
-      a.addValue("foo", "1");
-      a.addValue("blob", "blah");
-      b.addValue("foo", "1");
-      b.addValue("blob", "blah");
+      a.addEntry("foo", "1");
+      a.addEntry("blob", "blah");
+      b.addEntry("foo", "1");
+      b.addEntry("blob", "blah");
 
-      REQUIRE( a.hasSameValues(b) );
-      REQUIRE( b.hasSameValues(a) );
+      REQUIRE( a == b );
+      REQUIRE( b == a );
+
+      REQUIRE_FALSE( a != b );
+      REQUIRE_FALSE( b != a );
     }
 
     SECTION("same keys, different values")
     {
-      a.addValue("foo", "1");
-      b.addValue("foo", "2");
+      a.addEntry("foo", "1");
+      b.addEntry("foo", "2");
 
-      REQUIRE_FALSE( a.hasSameValues(b) );
-      REQUIRE_FALSE( b.hasSameValues(a) );
+      REQUIRE_FALSE( a == b );
+      REQUIRE_FALSE( b == a );
+
+      REQUIRE( a != b );
+      REQUIRE( b != a );
     }
 
     SECTION("different keys and values")
     {
-      a.addValue("foo", "1");
-      REQUIRE_FALSE( a.hasSameValues(b) );
-      REQUIRE_FALSE( b.hasSameValues(a) );
+      a.addEntry("foo", "1");
+      REQUIRE_FALSE( a == b );
+      REQUIRE_FALSE( b == a );
 
-      b.addValue("blob", "blah");
-      REQUIRE_FALSE( a.hasSameValues(b) );
-      REQUIRE_FALSE( b.hasSameValues(a) );
+      REQUIRE( a != b );
+      REQUIRE( b != a );
+
+      b.addEntry("blob", "blah");
+      REQUIRE_FALSE( a == b );
+      REQUIRE_FALSE( b == a );
+
+      REQUIRE( a != b );
+      REQUIRE( b != a );
     }
   }
 }

@@ -151,7 +151,7 @@ bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string
           m_Sections[currentSection] = IniSection();
       }
 
-      m_Sections[currentSection].addValue(key, value);
+      m_Sections[currentSection].addEntry(key, value);
     }
   }
   const bool eof_reached = input.eof();
@@ -169,7 +169,7 @@ bool Ini::hasSameContent(const Ini& other) const
   {
     if (!other.hasSection(section.first))
       return false;
-    if (!other.getSection(section.first).hasSameValues(section.second))
+    if (other.getSection(section.first) != section.second)
         return false;
   }
   return true;

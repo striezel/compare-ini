@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014, 2022  Dirk Stolle
+    Copyright (C) 2014, 2022, 2024  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,20 +31,20 @@ class IniSection
     IniSection();
 
 
-    /** \brief Add a new value to the section or replace an existing value.
+    /** \brief Add a new entry to the section or replace an existing entry.
      *
      * \param name the name of the entry
      * \param value the value of the entry
      */
-    void addValue(const std::string& name, const std::string& value);
+    void addEntry(const std::string& name, const std::string& value);
 
 
-    /** \brief Checks if a name / key exists in the current section.
+    /** \brief Checks if a entry / key exists in the current section.
      *
-     * \param name the name of the value
-     * \return Returns true, if the value exists; returns false otherwise.
+     * \param name  the name of the entry
+     * \return Returns true, if the entry exists; returns false otherwise.
      */
-    bool hasValue(const std::string& name) const;
+    bool hasEntry(const std::string& name) const;
 
 
     /** \brief Retrieves value of an entry.
@@ -57,14 +57,14 @@ class IniSection
     const std::string& getValue(const std::string& name) const;
 
 
-    /** \brief Returns a vector containing the names of all values in the ini.
+    /** \brief Returns a vector containing the names of all entries in the section.
      *
-     * \return vector of std::strings containing the value names
+     * \return vector of std::strings containing the entry names
      */
-    std::vector<std::string> getValueNames() const;
+    std::vector<std::string> getEntryNames() const;
 
 
-    /** \brief Deletes all values from the current section.
+    /** \brief Deletes all entries from the current section.
      */
     void clear();
 
@@ -74,7 +74,10 @@ class IniSection
      * \param other the other section
      * \return Returns true, if key-value pairs are equal. Returns false otherwise.
      */
-    bool hasSameValues(const IniSection& other) const;
+    bool operator==(const IniSection& other) const;
+
+    /// inequality operator
+    bool operator!=(const IniSection& other) const;
 
 
     /** \brief Determines whether this section and another section have the same key names.

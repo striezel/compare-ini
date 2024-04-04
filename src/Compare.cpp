@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014, 2022  Dirk Stolle
+    Copyright (C) 2014, 2022, 2024  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ void addEmptyLines(std::vector<std::string>& out, const unsigned int n)
 void addSection(std::vector<std::string>& out, const IniSection& sect, const std::string& sectName)
 {
   out.push_back("[" + sectName + "]");
-  const auto res = sect.getValueNames();
+  const auto res = sect.getEntryNames();
   for (const auto& item: res)
   {
     out.push_back(item + " = " + sect.getValue(item));
@@ -60,7 +60,7 @@ void compare(const Ini& left, const Ini& right, std::vector<std::string>& out_le
   {
     if (left.hasSection(section) && right.hasSection(section))
     {
-      if (!left.getSection(section).hasSameValues(right.getSection(section)))
+      if (left.getSection(section) != right.getSection(section))
       {
         out_left.push_back(std::string("[") + section + "]");
         out_right.push_back(std::string("[") + section + "]");
@@ -68,43 +68,43 @@ void compare(const Ini& left, const Ini& right, std::vector<std::string>& out_le
         const IniSection& leftSec = left.getSection(section);
         const IniSection& rightSec = right.getSection(section);
 
-        std::set<std::string> values;
-        res = leftSec.getValueNames();
-        for (const auto& val_name: res)
+        std::set<std::string> entries;
+        res = leftSec.getEntryNames();
+        for (const auto& entry_name: res)
         {
-          values.insert(val_name);
+          entries.insert(entry_name);
         }
 
-        res = rightSec.getValueNames();
-        for (const auto& val_name: res)
+        res = rightSec.getEntryNames();
+        for (const auto& entry_name: res)
         {
-          values.insert(val_name);
+          entries.insert(entry_name);
         }
 
-        for (const auto& val_name: values)
+        for (const auto& entry_name: entries)
         {
-          // value is present in both
-          if (leftSec.hasValue(val_name) && rightSec.hasValue(val_name))
+          // entry is present in both
+          if (leftSec.hasEntry(entry_name) && rightSec.hasEntry(entry_name))
           {
-            const std::string& leftVal = leftSec.getValue(val_name);
-            const std::string& rightVal = rightSec.getValue(val_name);
+            const std::string& leftVal = leftSec.getValue(entry_name);
+            const std::string& rightVal = rightSec.getValue(entry_name);
             if (leftVal != rightVal)
             {
-              out_left.push_back(val_name + " = " + leftVal);
-              out_right.push_back(val_name + " = " + rightVal);
+              out_left.push_back(entry_name + " = " + leftVal);
+              out_right.push_back(entry_name + " = " + rightVal);
             }
           }
-          // value is (only) present in left section
-          else if (leftSec.hasValue(val_name))
+          // entry is (only) present in left section
+          else if (leftSec.hasEntry(entry_name))
           {
-            out_left.push_back(val_name + " = " + leftSec.getValue(val_name));
+            out_left.push_back(entry_name + " = " + leftSec.getValue(entry_name));
             out_right.push_back("");
           }
           else
           {
              // only present in right section
              out_left.push_back("");
-             out_right.push_back(val_name + " = " + rightSec.getValue(val_name));
+             out_right.push_back(entry_name + " = " + rightSec.getValue(entry_name));
           }
         }
       } // if sections not equal
@@ -113,13 +113,13 @@ void compare(const Ini& left, const Ini& right, std::vector<std::string>& out_le
     {
       const IniSection& leftSec = left.getSection(section);
       addSection(out_left, leftSec, section);
-      addEmptyLines(out_right, leftSec.getValueNames().size() + 1);
+      addEmptyLines(out_right, leftSec.getEntryNames().size() + 1);
     } // if section is only present in left ini
     else if (right.hasSection(section))
     {
       const IniSection& rightSec = right.getSection(section);
       addSection(out_right, rightSec, section);
-      addEmptyLines(out_left, rightSec.getValueNames().size() + 1);
+      addEmptyLines(out_left, rightSec.getEntryNames().size() + 1);
     } // if section is only present in left ini
   }
 }

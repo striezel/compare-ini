@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014, 2022  Dirk Stolle
+    Copyright (C) 2014, 2022, 2024  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,12 +26,12 @@ IniSection::IniSection()
 {
 }
 
-void IniSection::addValue(const std::string& name, const std::string& value)
+void IniSection::addEntry(const std::string& name, const std::string& value)
 {
   m_Values[name] = value;
 }
 
-bool IniSection::hasValue(const std::string& name) const
+bool IniSection::hasEntry(const std::string& name) const
 {
   return m_Values.find(name) != m_Values.end();
 }
@@ -44,7 +44,7 @@ const std::string& IniSection::getValue(const std::string& name) const
   throw EntryNotFoundException(name);
 }
 
-std::vector<std::string> IniSection::getValueNames() const
+std::vector<std::string> IniSection::getEntryNames() const
 {
   std::vector<std::string> result;
   for (const auto& value: m_Values)
@@ -59,14 +59,14 @@ void IniSection::clear()
   m_Values.clear();
 }
 
-bool IniSection::hasSameValues(const IniSection& other) const
+bool IniSection::operator==(const IniSection& other) const
 {
-  std::vector<std::string> otherNames = other.getValueNames();
+  const std::vector<std::string> otherNames = other.getEntryNames();
   if (otherNames.size() != m_Values.size())
     return false;
   for (const auto& value: m_Values)
   {
-    if (!other.hasValue(value.first))
+    if (!other.hasEntry(value.first))
       return false;
     if (other.getValue(value.first) != value.second)
         return false;
@@ -74,7 +74,12 @@ bool IniSection::hasSameValues(const IniSection& other) const
   return true;
 }
 
+bool IniSection::operator!=(const IniSection& other) const
+{
+  return !(*this == other);
+}
+
 bool IniSection::hasSameKeys(const IniSection& other) const
 {
-  return getValueNames() == other.getValueNames();
+  return getEntryNames() == other.getEntryNames();
 }
