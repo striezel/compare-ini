@@ -24,6 +24,10 @@ jobs:
           cd build
           cmake ../
           make -j2
+      - name: Run tests
+        run: |
+          cd "$GITHUB_WORKSPACE"/build
+          ctest -V
       - name: Statically linked build with Clang ${{ matrix.version }}
         run: |
           export CXX=clang++-${{ matrix.version }}
@@ -33,3 +37,7 @@ jobs:
           cd build-static
           cmake ../ -DENABLE_LTO=ON -DENABLE_STATIC_LINKING=ON
           make -j2
+      - name: Run tests for statically linked version
+        run: |
+          cd "$GITHUB_WORKSPACE"/build-static
+          ctest -V

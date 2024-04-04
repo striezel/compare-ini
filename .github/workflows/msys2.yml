@@ -34,6 +34,10 @@ jobs:
           cd build
           cmake ../
           cmake --build . -j2
+      - name: Run tests
+        run: |
+          cd "$GITHUB_WORKSPACE"/build
+          ctest -V
       - name: Statically linked build
         run: |
           export MSYSTEM=MINGW64
@@ -44,6 +48,10 @@ jobs:
           cd build-static
           cmake ../ -DENABLE_LTO=ON -DENABLE_STATIC_LINKING=ON
           cmake --build . -j2
+      - name: Run tests for statically linked build
+        run: |
+          cd "$GITHUB_WORKSPACE"/build-static
+          ctest -V
       - name: Collect build artifacts
         run: |
           export MSYSTEM=MINGW64

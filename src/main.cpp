@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014, 2022  Dirk Stolle
+    Copyright (C) 2014, 2022, 2024  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
       {
         const std::string param = std::string(argv[i]);
         // help parameter
-        if ((param == "--help") || (param == "-?"))
+        if ((param == "--help") || (param == "-?") || (param == "/?"))
         {
           showHelp();
           return 0;

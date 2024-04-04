@@ -11,6 +11,7 @@ build_gcc:
     - cd ./build
     - cmake ../
     - make -j4
+    - ctest -V
 
 # Build with Clang / Clang++.
 build_clang:
@@ -23,3 +24,4 @@ build_clang:
     - cd ./build
     - cmake ../
     - make -j4
+    - ctest -V

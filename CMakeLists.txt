@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 3.8)
 
 project(compare-ini)
 
+enable_testing()
+
 # If the option ENABLE_LTO is enabled (e. g. via `cmake -DENABLE_LTO=ON`)
 # during the build, then all binaries will use link-time optimization (LTO).
 option(ENABLE_LTO "Enable link-time optimization" OFF)
