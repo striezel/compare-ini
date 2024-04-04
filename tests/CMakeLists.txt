@@ -12,8 +12,10 @@ project(component_tests)
 
 set(component_tests_sources
     ../src/EntryNotFoundException.cpp
+    ../src/IniSection.cpp
     ../src/StringFunctions.cpp
     EntryNotFoundException.cpp
+    IniSection.cpp
     StringFunctions.cpp
     main.cpp)
 
