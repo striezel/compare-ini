@@ -15,7 +15,7 @@ jobs:
       - name: Install Debian packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake g++-${{ matrix.version }} pkg-config
+          sudo apt-get install -y catch2 cmake g++-${{ matrix.version }} pkg-config
       - name: Build with GNU GCC ${{ matrix.version }}
         run: |
           export CXX=g++-${{ matrix.version }}

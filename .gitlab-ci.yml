@@ -4,7 +4,7 @@ image: debian:12-slim
 build_gcc:
   stage: build
   before_script:
-    - apt-get update && apt-get -y install cmake g++ pkg-config
+    - apt-get update && apt-get -y install catch2 cmake g++ pkg-config
     - export CC=gcc && export CXX=g++
   script:
     - mkdir ./build
@@ -17,7 +17,7 @@ build_gcc:
 build_clang:
   stage: build
   before_script:
-    - apt-get update && apt-get -y install clang cmake pkg-config
+    - apt-get update && apt-get -y install catch2 clang cmake pkg-config
     - export CC=clang && export CXX=clang++
   script:
     - mkdir ./build

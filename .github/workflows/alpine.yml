@@ -19,7 +19,7 @@ jobs:
       - name: Install packages
         run: |
           apk update
-          apk add cmake g++ make pkgconf
+          apk add catch2 cmake g++ make pkgconf
       - name: Build
         run: |
           cd "$GITHUB_WORKSPACE"
