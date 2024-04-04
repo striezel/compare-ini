@@ -3,7 +3,7 @@
 Currently, compare-ini does not support native Windows builds with Microsoft
 Visual Studio. However, it can be built on Windows systems with
 [MSYS2](https://www.msys2.org/). MSYS2 provides some typical GNU / Linux tools
-on Windows operating systems. Those can be used to build botvinnik.
+on Windows operating systems. Those can be used to build compare-ini.
 
 ## Prerequisites
 
@@ -23,8 +23,9 @@ into the prompt, then press enter.
 
 ### Build tools
 
-To build the botvinnik from source you need a C++ compiler, CMake, and the Ninja
-build system.
+To build compare-ini from source you need a C++ compiler, CMake, and the Ninja
+build system. Additionally, the program uses Catch (C++ Automated Test Cases in
+Headers) to perform some tests.
 
 It also helps to have Git, a distributed version control system, on your build
 system to get the latest source code directly from the Git repository.
@@ -32,7 +33,7 @@ system to get the latest source code directly from the Git repository.
 All of that can usually be installed be typing
 
 ```bash
-pacman -S git mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-ninja
+pacman -S git mingw-w64-x86_64-catch mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-ninja
 ```
 
 into the MSYS2 command prompt.
