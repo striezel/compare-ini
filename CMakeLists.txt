@@ -31,21 +31,5 @@ if (ENABLE_STATIC_LINKING)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++ -static")
 endif ()
 
-set(compare_ini_sources
-    Compare.cpp
-    EntryNotFoundException.cpp
-    Ini.cpp
-    IniSection.cpp
-    StringFunctions.cpp
-    main.cpp)
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_definitions (-Wall -Wextra -pedantic -pedantic-errors -Wshadow -O3 -fexceptions)
-
-    set( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -s" )
-endif ()
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_executable(compare-ini ${compare_ini_sources})
+# Recurse into subdirectory for the main executable.
+add_subdirectory (src)

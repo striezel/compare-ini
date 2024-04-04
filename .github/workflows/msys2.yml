@@ -50,7 +50,7 @@ jobs:
           mkdir -p "$GITHUB_WORKSPACE"/artifacts
           cd "$GITHUB_WORKSPACE"
           # binary file
-          cp build-static/compare-ini.exe artifacts/
+          cp build-static/src/compare-ini.exe artifacts/
           # license + changelog + readme + third-party notices
           cp LICENSE artifacts/
           cp CHANGELOG.md artifacts/

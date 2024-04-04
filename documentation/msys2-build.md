@@ -64,4 +64,4 @@ cmake --build . -j4
 It may take a moment to build.
 
 After the build is finished, the executable will be available as
-`compare-ini.exe` inside the `build` directory.
+`src\compare-ini.exe` inside the `build` directory.
