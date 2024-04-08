@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014, 2022  Dirk Stolle
+    Copyright (C) 2014, 2022, 2024  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -101,12 +101,12 @@ class Ini
     bool read(const std::string& fileName, unsigned int& lineCount, std::string& error);
 
 
-    /** \brief Determines whether this ini and another section have the same
+    /** \brief Determines whether this ini and another ini have the same
      *         sections with the same key-value pairs.
      * \param other the other ini
      * \return Returns true, if both ini contents are equal. Returns false otherwise.
      */
-    bool hasSameContent(const Ini& other) const;
+    bool operator==(const Ini& other) const;
 
 
     /** \brief Determines whether this ini and another ini have the same section names.

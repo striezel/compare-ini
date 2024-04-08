@@ -262,8 +262,8 @@ TEST_CASE("Ini")
 
     SECTION("empty")
     {
-      REQUIRE( a.hasSameContent(b) );
-      REQUIRE( b.hasSameContent(a) );
+      REQUIRE( a == b );
+      REQUIRE( b == a );
     }
 
     SECTION("same sections, same entries")
@@ -279,8 +279,8 @@ TEST_CASE("Ini")
       b.addSection("foo", foo);
       b.addSection("blob", blob);
 
-      REQUIRE( a.hasSameContent(b) );
-      REQUIRE( b.hasSameContent(a) );
+      REQUIRE( a == b );
+      REQUIRE( b == a );
     }
 
     SECTION("same sections, different entries")
@@ -294,8 +294,8 @@ TEST_CASE("Ini")
       a.addSection("foo", foo_1st);
       b.addSection("foo", foo_2nd);
 
-      REQUIRE_FALSE( a.hasSameContent(b) );
-      REQUIRE_FALSE( b.hasSameContent(a) );
+      REQUIRE_FALSE( a == b );
+      REQUIRE_FALSE( b == a );
     }
 
     SECTION("same sections, same entries, but different values")
@@ -309,8 +309,8 @@ TEST_CASE("Ini")
       a.addSection("foo", foo_1st);
       b.addSection("foo", foo_2nd);
 
-      REQUIRE_FALSE( a.hasSameContent(b) );
-      REQUIRE_FALSE( b.hasSameContent(a) );
+      REQUIRE_FALSE( a == b );
+      REQUIRE_FALSE( b == a );
     }
 
     SECTION("different sections and entries")
@@ -322,12 +322,12 @@ TEST_CASE("Ini")
       blob.addEntry("blub", "blah");
 
       a.addSection("foo", foo);
-      REQUIRE_FALSE( a.hasSameContent(b) );
-      REQUIRE_FALSE( b.hasSameContent(a) );
+      REQUIRE_FALSE( a == b );
+      REQUIRE_FALSE( b == a );
 
       b.addSection("blob", blob);
-      REQUIRE_FALSE( a.hasSameContent(b) );
-      REQUIRE_FALSE( b.hasSameContent(a) );
+      REQUIRE_FALSE( a == b );
+      REQUIRE_FALSE( b == a );
     }
   }
 }

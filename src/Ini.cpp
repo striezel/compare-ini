@@ -1,7 +1,7 @@
 /*
  -------------------------------------------------------------------------------
     This file is part of the compare-ini tool.
-    Copyright (C) 2014, 2022  Dirk Stolle
+    Copyright (C) 2014, 2022, 2024  Dirk Stolle
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -160,19 +160,9 @@ bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string
   return eof_reached;
 }
 
-bool Ini::hasSameContent(const Ini& other) const
+bool Ini::operator==(const Ini& other) const
 {
-  std::vector<std::string> otherNames = other.getSectionNames();
-  if (otherNames.size() != m_Sections.size())
-    return false;
-  for (const auto& section: m_Sections)
-  {
-    if (!other.hasSection(section.first))
-      return false;
-    if (other.getSection(section.first) != section.second)
-        return false;
-  }
-  return true;
+  return m_Sections == other.m_Sections;
 }
 
 bool Ini::hasSameSectionNames(const Ini& other) const
