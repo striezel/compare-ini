@@ -20,6 +20,8 @@
 
 #include "locate_catch.hpp"
 #include "../src/Ini.hpp"
+#include <sstream>
+#include <string_view>
 
 TEST_CASE("Ini")
 {
@@ -328,6 +330,125 @@ TEST_CASE("Ini")
       b.addSection("blob", blob);
       REQUIRE_FALSE( a == b );
       REQUIRE_FALSE( b == a );
+    }
+  }
+
+  SECTION("read (stream-based)")
+  {
+    using namespace std::string_view_literals;
+
+    SECTION("small ini with two sections")
+    {
+      const std::string_view data = "[hey]\nhello = world\n\n[next]\nkey = value\nnext=no\n"sv;
+      std::istringstream stream;
+      stream.str(std::string(data));
+
+      Ini ini;
+      unsigned int lines = 0;
+      std::string error;
+
+      REQUIRE( ini.read(stream, lines, error) );
+      REQUIRE( error == "eof bit" );
+      REQUIRE( lines == 6 );
+
+      REQUIRE( ini.hasSection("hey") );
+      REQUIRE( ini.getSection("hey").hasEntry("hello") );
+      REQUIRE( ini.getSection("hey").getValue("hello") == "world" );
+
+      REQUIRE( ini.hasSection("next") );
+      REQUIRE( ini.getSection("next").hasEntry("key") );
+      REQUIRE( ini.getSection("next").getValue("key") == "value" );
+      REQUIRE( ini.getSection("next").hasEntry("next") );
+      REQUIRE( ini.getSection("next").getValue("next") == "no" );
+    }
+
+    SECTION("ini with comment")
+    {
+      const std::string_view data = "; This is a comment.\n[Settings]\ncomments = yes\n"sv;
+      std::istringstream stream;
+      stream.str(std::string(data));
+
+      Ini ini;
+      unsigned int lines = 0;
+      std::string error;
+
+      REQUIRE( ini.read(stream, lines, error) );
+      REQUIRE( error == "eof bit" );
+      REQUIRE( lines == 3 );
+
+      REQUIRE( ini.hasSection("Settings") );
+      REQUIRE( ini.getSection("Settings").hasEntry("comments") );
+      REQUIRE( ini.getSection("Settings").getValue("comments") == "yes" );
+    }
+
+    SECTION("corrupt data: no closing bracket")
+    {
+      const std::string_view data = "[Settings\ncomments = yes\n"sv;
+      std::istringstream stream;
+      stream.str(std::string(data));
+
+      Ini ini;
+      unsigned int lines = 0;
+      std::string error;
+
+      REQUIRE_FALSE( ini.read(stream, lines, error) );
+      REQUIRE( error == "No closing bracket in section line!" );
+      REQUIRE( lines == 1 );
+
+      REQUIRE_FALSE( ini.hasSection("Settings") );
+    }
+
+    SECTION("corrupt data: empty section name")
+    {
+      const std::string_view data = "[]\ncomments = yes\n"sv;
+      std::istringstream stream;
+      stream.str(std::string(data));
+
+      Ini ini;
+      unsigned int lines = 0;
+      std::string error;
+
+      REQUIRE_FALSE( ini.read(stream, lines, error) );
+      REQUIRE( error == "Empty section name!" );
+      REQUIRE( lines == 1 );
+
+      REQUIRE( ini.getSectionNames().empty() );
+    }
+
+    SECTION("corrupt data: missing equality sign")
+    {
+      const std::string_view data = "[Settings]\ncomments yes\n"sv;
+      std::istringstream stream;
+      stream.str(std::string(data));
+
+      Ini ini;
+      unsigned int lines = 0;
+      std::string error;
+
+      REQUIRE_FALSE( ini.read(stream, lines, error) );
+      REQUIRE( error == "No equality sign in key-value line!" );
+      REQUIRE( lines == 2 );
+
+      REQUIRE( ini.hasSection("Settings") );
+      REQUIRE( ini.getSection("Settings").getEntryNames().empty() );
+    }
+
+    SECTION("corrupt data: empty key")
+    {
+      const std::string_view data = "[Settings]\n = yes\n"sv;
+      std::istringstream stream;
+      stream.str(std::string(data));
+
+      Ini ini;
+      unsigned int lines = 0;
+      std::string error;
+
+      REQUIRE_FALSE( ini.read(stream, lines, error) );
+      REQUIRE( error == "Empty key name!" );
+      REQUIRE( lines == 2 );
+
+      REQUIRE( ini.hasSection("Settings") );
+      REQUIRE( ini.getSection("Settings").getEntryNames().empty() );
     }
   }
 }

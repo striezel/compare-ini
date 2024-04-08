@@ -90,11 +90,17 @@ bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string
     return false;
   }
 
+  return read(input, lineCount, error);
+}
+
+bool Ini::read(std::istream& stream, unsigned int& lineCount, std::string& error)
+{
+  lineCount = 0;
   std::string currentSection = "";
   const unsigned int buff_size = 4096;
   char buffer[buff_size];
   memset(buffer, '\0', buff_size);
-  while (input.getline(buffer, buff_size - 1))
+  while (stream.getline(buffer, buff_size - 1))
   {
     ++lineCount;
     std::string line(buffer);
@@ -110,17 +116,19 @@ bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string
       // try to remove brackets
       if (!removeEnclosingBrackets(line))
       {
-        input.close();
         error = "No closing bracket in section line!";
         return false;
       }
       if (line.empty())
       {
-        input.close();
         error = "Empty section name!";
         return false;
       }
       currentSection = line;
+      if (!hasSection(currentSection))
+      {
+          m_Sections[currentSection] = IniSection();
+      }
     }
     // normal line / key-value pair
     else
@@ -129,7 +137,6 @@ bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string
       if (pos == std::string::npos)
       {
         // failure
-        input.close();
         error = "No equality sign in key-value line!";
         return false;
       }
@@ -138,7 +145,6 @@ bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string
       if (key.empty())
       {
         // no empty keys!
-        input.close();
         error = "Empty key name!";
         return false;
       }
@@ -154,8 +160,7 @@ bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string
       m_Sections[currentSection].addEntry(key, value);
     }
   }
-  const bool eof_reached = input.eof();
-  input.close();
+  const bool eof_reached = stream.eof();
   error = "eof bit";
   return eof_reached;
 }
