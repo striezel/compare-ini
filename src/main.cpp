@@ -18,6 +18,9 @@
  -------------------------------------------------------------------------------
 */
 
+#if defined(_WIN32) || defined(_WIN64)
+#include <cstdlib>
+#endif
 #include <iostream>
 #include "Ini.hpp"
 #include "Compare.hpp"
@@ -224,11 +227,51 @@ int main(int argc, char **argv)
         }
         else if (first.empty())
         {
-          first = param;
+          try
+          {
+            #if !defined(_WIN32) && !defined(_WIN64)
+            first = param;
+            #else
+            std::wstring utf16(param.size(), L'\0');
+            const auto num_chars = std::mbstowcs(&utf16[0], param.c_str(), param.size());
+            if (num_chars == static_cast<std::size_t>(-1))
+            {
+              std::cerr << "Error: " << param << " is not a valid parameter!\n";
+              return rcInvalidParameter;
+            }
+            first = utf16;
+            #endif
+          }
+          catch (...)
+          {
+            std::cerr << "Error: " << param << " is neither a valid parameter "
+                      << "nor a valid file path!\n";
+            return rcInvalidParameter;
+          }
         }
         else if (second.empty())
         {
-          second = param;
+          try
+          {
+            #if !defined(_WIN32) && !defined(_WIN64)
+            second = param;
+            #else
+            std::wstring utf16(param.size(), L'\0');
+            const auto num_chars = std::mbstowcs(&utf16[0], param.c_str(), param.size());
+            if (num_chars == static_cast<std::size_t>(-1))
+            {
+              std::cerr << "Error: " << param << " is not a valid parameter!\n";
+              return rcInvalidParameter;
+            }
+            second = utf16;
+            #endif
+          }
+          catch (...)
+          {
+            std::cerr << "Error: " << param << " is neither a valid parameter "
+                      << "nor a valid file path!\n";
+            return rcInvalidParameter;
+          }
         }
         else
         {
