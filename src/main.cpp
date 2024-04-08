@@ -342,7 +342,7 @@ int main(int argc, char **argv)
 
   if (ini_first == ini_second)
     std::cout << "Both .ini files have the same content.\n";
-  else if (ini_first.hasSameSectionNames(ini_second))
+  else
   {
     std::vector<std::string> out_left;
     std::vector<std::string> out_right;
