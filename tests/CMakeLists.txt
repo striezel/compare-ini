@@ -61,3 +61,13 @@ endif ()
 # add test case
 add_test(NAME test_components
          COMMAND $<TARGET_FILE:component_tests>)
+
+if (NOT WIN32)
+  set(EXT "sh")
+else ()
+  set(EXT "cmd")
+endif()
+
+# test for wrong arguments
+add_test(NAME compare-ini_parameter_misuse
+         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/parameter-misuse.${EXT} $<TARGET_FILE:compare-ini>)

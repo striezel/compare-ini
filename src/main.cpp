@@ -222,26 +222,6 @@ int main(int argc, char **argv)
           commentCharacterFirst = param[2];
           commentCharacterSecond = param[2];
         }
-        else if ((param.size() == 4) && ((param.find("-c1") == 0) || (param.find("-cl") == 0)))
-        {
-          if (commentCharacterFirst != '\0')
-          {
-            std::cerr << "First/left comment character was already set to '"
-                      << commentCharacterFirst << "'.\n";
-            return rcInvalidParameter;
-          }
-          commentCharacterFirst = param[3];
-        }
-        else if ((param.size() == 4) && ((param.find("-c2") == 0) || (param.find("-cr") == 0)))
-        {
-          if (commentCharacterSecond != '\0')
-          {
-            std::cerr << "Second/right comment character was already set to '"
-                      << commentCharacterSecond << "'.\n";
-            return rcInvalidParameter;
-          }
-          commentCharacterSecond = param[3];
-        }
         else if (first.empty())
         {
           first = param;
@@ -269,7 +249,7 @@ int main(int argc, char **argv)
 
   if (first.empty() || second.empty())
   {
-    std::cerr << "Not enough parameters given: You have to specify two ini files to compare!\n";
+    std::cerr << "Not enough parameters given: You have to specify two .ini files to compare!\n";
     return rcInvalidParameter;
   }
 
