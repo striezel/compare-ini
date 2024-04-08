@@ -20,7 +20,6 @@
 
 #include "locate_catch.hpp"
 #include "../src/Ini.hpp"
-#include <filesystem>
 #include <sstream>
 #include <string_view>
 
@@ -465,7 +464,7 @@ TEST_CASE("Ini")
       unsigned int lines = 0;
       std::string error;
 
-      REQUIRE_FALSE( ini.read(path.string(), lines, error) );
+      REQUIRE_FALSE( ini.read(path, lines, error) );
       REQUIRE( error.find("Could not open file") != std::string::npos );
       REQUIRE( lines == 0 );
     }

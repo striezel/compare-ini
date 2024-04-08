@@ -79,14 +79,14 @@ void Ini::clear()
   m_Sections.clear();
 }
 
-bool Ini::read(const std::string& fileName, unsigned int& lineCount, std::string& error)
+bool Ini::read(const std::filesystem::path& path, unsigned int& lineCount, std::string& error)
 {
   lineCount = 0;
   std::ifstream input;
-  input.open(fileName.c_str(), std::ios::binary | std::ios::in);
+  input.open(path, std::ios::binary | std::ios::in);
   if (!input.good())
   {
-    error = "Could not open file " + fileName + " for reading!";
+    error = "Could not open file " + path.string() + " for reading!";
     return false;
   }
 

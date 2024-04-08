@@ -21,6 +21,7 @@
 #ifndef INI_HPP
 #define INI_HPP
 
+#include <filesystem>
 #include <istream>
 #include <string>
 #include <map>
@@ -94,12 +95,12 @@ class Ini
 
     /** \brief Tries to read all .ini data from a given file.
      *
-     * \param fileName path to the .ini file
+     * \param path  path to the .ini file
      * \param lineCount var that tracks the current line number in case of errors
      * \param error var that holds the error message in case of errors
      * \return Returns true, if the read was successful. Returns false otherwise.
      */
-    bool read(const std::string& fileName, unsigned int& lineCount, std::string& error);
+    bool read(const std::filesystem::path& path, unsigned int& lineCount, std::string& error);
 
 
     /** \brief Tries to read all .ini data from a given input stream.

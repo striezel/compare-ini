@@ -79,8 +79,8 @@ std::string pad(const std::string& str, const std::string::size_type len)
 
 int main(int argc, char **argv)
 {
-  std::string first = "";
-  std::string second = "";
+  std::filesystem::path first;
+  std::filesystem::path second;
   char commentCharacterFirst = '\0';
   char commentCharacterSecond = '\0';
 
@@ -304,8 +304,8 @@ int main(int argc, char **argv)
     std::vector<std::string> out_left;
     std::vector<std::string> out_right;
     compare(ini_first, ini_second, out_left, out_right);
-    out_left.insert(out_left.begin(), first);
-    out_right.insert(out_right.begin(), second);
+    out_left.insert(out_left.begin(), first.string());
+    out_right.insert(out_right.begin(), second.string());
 
     std::string::size_type maxLeftLength = 0;
     for (const auto& left_item: out_left)
