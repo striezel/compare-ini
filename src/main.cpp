@@ -69,7 +69,7 @@ void showHelp()
 
 void showVersion()
 {
-  std::cout << "compare-ini, version 0.5.0, 2022-11-28\n";
+  std::cout << "compare-ini, version 0.6.0, 2024-04-08\n";
 }
 
 std::string pad(const std::string& str, const std::string::size_type len)

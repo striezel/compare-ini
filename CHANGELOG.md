@@ -2,7 +2,7 @@
 
 _(Note: Smaller fixes or improvements may be omitted.)_
 
-## Version 0.?.? (2024-04-??)
+## Version 0.6.0 (2024-04-08)
 
 Error messages are now shown on standard error stream instead of the standard
 output stream.
