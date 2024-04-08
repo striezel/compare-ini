@@ -31,11 +31,14 @@
 		</Compiler>
 		<Unit filename="../src/EntryNotFoundException.cpp" />
 		<Unit filename="../src/EntryNotFoundException.hpp" />
+		<Unit filename="../src/Ini.cpp" />
+		<Unit filename="../src/Ini.hpp" />
 		<Unit filename="../src/IniSection.cpp" />
 		<Unit filename="../src/IniSection.hpp" />
 		<Unit filename="../src/StringFunctions.cpp" />
 		<Unit filename="../src/StringFunctions.hpp" />
 		<Unit filename="EntryNotFoundException.cpp" />
+		<Unit filename="Ini.cpp" />
 		<Unit filename="IniSection.cpp" />
 		<Unit filename="StringFunctions.cpp" />
 		<Unit filename="main.cpp" />
