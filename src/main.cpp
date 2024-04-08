@@ -29,7 +29,7 @@ const int rcFileError        = 2;
 void showGPLNotice()
 {
   std::cout << "compare-ini\n"
-            << "  Copyright (C) 2014, 2022  Dirk Stolle\n"
+            << "  Copyright (C) 2014, 2022, 2024  Dirk Stolle\n"
             << "\n"
             << "  This program is free software: you can redistribute it and/or modify\n"
             << "  it under the terms of the GNU General Public License as published by\n"
