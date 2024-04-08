@@ -362,9 +362,53 @@ TEST_CASE("Ini")
       REQUIRE( ini.getSection("next").getValue("next") == "no" );
     }
 
+    SECTION("small ini with two sections, with CRLF line terminators")
+    {
+      const std::string_view data = "[hey]\r\nhello = world\r\n\r\n[next]\r\nkey = value\r\nnext=no\r\n"sv;
+      std::istringstream stream;
+      stream.str(std::string(data));
+
+      Ini ini;
+      unsigned int lines = 0;
+      std::string error;
+
+      REQUIRE( ini.read(stream, lines, error) );
+      REQUIRE( error == "eof bit" );
+      REQUIRE( lines == 6 );
+
+      REQUIRE( ini.hasSection("hey") );
+      REQUIRE( ini.getSection("hey").hasEntry("hello") );
+      REQUIRE( ini.getSection("hey").getValue("hello") == "world" );
+
+      REQUIRE( ini.hasSection("next") );
+      REQUIRE( ini.getSection("next").hasEntry("key") );
+      REQUIRE( ini.getSection("next").getValue("key") == "value" );
+      REQUIRE( ini.getSection("next").hasEntry("next") );
+      REQUIRE( ini.getSection("next").getValue("next") == "no" );
+    }
+
     SECTION("ini with comment")
     {
       const std::string_view data = "; This is a comment.\n[Settings]\ncomments = yes\n"sv;
+      std::istringstream stream;
+      stream.str(std::string(data));
+
+      Ini ini;
+      unsigned int lines = 0;
+      std::string error;
+
+      REQUIRE( ini.read(stream, lines, error) );
+      REQUIRE( error == "eof bit" );
+      REQUIRE( lines == 3 );
+
+      REQUIRE( ini.hasSection("Settings") );
+      REQUIRE( ini.getSection("Settings").hasEntry("comments") );
+      REQUIRE( ini.getSection("Settings").getValue("comments") == "yes" );
+    }
+
+    SECTION("ini with comment, with CRLF line terminators")
+    {
+      const std::string_view data = "; This is a comment.\r\n[Settings]\r\ncomments = yes\r\n"sv;
       std::istringstream stream;
       stream.str(std::string(data));
 

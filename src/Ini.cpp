@@ -105,6 +105,11 @@ bool Ini::read(std::istream& stream, unsigned int& lineCount, std::string& error
     ++lineCount;
     std::string line(buffer);
     trim(line);
+    // check for possible carriage return at end (usually on Windows systems)
+    if (!line.empty() && (line[line.size() - 1] == '\r'))
+    {
+      line.erase(line.size() - 1);
+    }
     if (line.empty())
       continue;
     if (line[0] == m_CommentChar)
