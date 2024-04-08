@@ -66,7 +66,7 @@ char Ini::getCommentCharacter() const
 
 bool Ini::setCommentCharacter(const char cc)
 {
-  if (cc != '[' && std::isgraph(static_cast<unsigned char>(cc)))
+  if (cc != '[' && cc != ']' && cc != '=' && std::isgraph(static_cast<unsigned char>(cc)))
   {
     m_CommentChar = cc;
     return true;

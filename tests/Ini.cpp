@@ -106,6 +106,13 @@ TEST_CASE("Ini")
       REQUIRE_FALSE( ini.setCommentCharacter('\x7F') );
     }
 
+    SECTION("disallowed characters with special meaning")
+    {
+      REQUIRE_FALSE( ini.setCommentCharacter('[') );
+      REQUIRE_FALSE( ini.setCommentCharacter(']') );
+      REQUIRE_FALSE( ini.setCommentCharacter('=') );
+    }
+
     SECTION("setting comment character actually changes comment character")
     {
       REQUIRE( ini.setCommentCharacter('~') );
