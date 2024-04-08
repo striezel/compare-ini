@@ -20,6 +20,7 @@
 
 #include "locate_catch.hpp"
 #include "../src/Ini.hpp"
+#include <filesystem>
 #include <sstream>
 #include <string_view>
 
@@ -449,6 +450,24 @@ TEST_CASE("Ini")
 
       REQUIRE( ini.hasSection("Settings") );
       REQUIRE( ini.getSection("Settings").getEntryNames().empty() );
+    }
+  }
+
+  SECTION("read (with path)")
+  {
+    namespace fs = std::filesystem;
+
+    SECTION("attempting to read a non-existent file")
+    {
+      const fs::path path{ fs::path{"file"} / "does" / "not" / "exist.here" };
+
+      Ini ini;
+      unsigned int lines = 0;
+      std::string error;
+
+      REQUIRE_FALSE( ini.read(path.string(), lines, error) );
+      REQUIRE( error.find("Could not open file") != std::string::npos );
+      REQUIRE( lines == 0 );
     }
   }
 }

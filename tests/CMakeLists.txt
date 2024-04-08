@@ -42,6 +42,22 @@ if (HAS_CATCH_V3)
     target_link_libraries(component_tests Catch2::Catch2WithMain)
 endif ()
 
+# GNU GCC before 9.1.0 needs to link to libstdc++fs explicitly.
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "9.1.0")
+  target_link_libraries(component_tests stdc++fs)
+endif ()
+
+# Clang before 9.0 needs to link to libc++fs explicitly.
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "9.0")
+  if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "8.0")
+    # If we are on Clang 7.x, then the filesystem library from GCC is better.
+    target_link_libraries(component_tests stdc++fs)
+  else ()
+   # Use Clang's C++ filesystem library, it is recent enough.
+   target_link_libraries(component_tests c++fs)
+  endif ()
+endif ()
+
 # add test case
 add_test(NAME test_components
          COMMAND $<TARGET_FILE:component_tests>)
